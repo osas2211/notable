@@ -2,6 +2,7 @@ require("dotenv").config()
 const express = require("express")
 const http = require("http2")
 const cors = require("cors")
+const connectDB = require("./db/connectDB")
 const app = express()
 
 // essential middlewares
@@ -11,6 +12,14 @@ app.use(express.urlencoded({extended: true}))
 
 const PORT = process.env.PORT || 4000
 
-http.createServer(app).listen(PORT, ()=>{
-  console.log(`server is running at PORT ${PORT}`)
+http.createServer(app).listen(PORT, async ()=>{
+
+  try {
+    await connectDB()
+    console.log("db connected");
+    console.log(`server is running at PORT ${PORT}`)
+  } catch (error) {
+    console.log(error.message)
+  }
+
 })
