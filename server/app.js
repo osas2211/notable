@@ -9,7 +9,7 @@ const app = express()
 // essential middlewares
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
 const PORT = process.env.PORT || 4000
 
