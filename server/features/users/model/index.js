@@ -5,17 +5,17 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Name is required"],
   },
+  email: {
+    type: String,
+    required: [true, "email is required"],
+    unique: [true, "email already exist"],
+  },
   userName: {
     type: String,
     maxLength: [20, "username characters must not exceed 20"],
     minLength: [4, "username characters must not be below 4"],
     required: [true, "userName is required"],
     unique: [true, "userName already exist"],
-  },
-  email: {
-    type: String,
-    required: [true, "email is required"],
-    unique: [true, "email already exist"],
   },
   password: {
     type: String,
@@ -32,6 +32,9 @@ const userSchema = new Schema({
   quicknotes: {
     type: [],
     default: [],
+  },
+  token: {
+    type: String,
   },
 })
 
