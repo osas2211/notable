@@ -4,6 +4,7 @@ const http = require("http2")
 const cors = require("cors")
 const connectDB = require("./db/connectDB")
 const startApp = require("./utils/startApp")
+const userModel = require("./features/users/model")
 const app = express()
 
 // essential middlewares
