@@ -4,17 +4,14 @@ const getToken$HashedPswd = require("../../../utils/getTokenPswd")
 const signUp = async (req, res) => {
   const { name, userName, password, email } = req.body
   try {
-    const { token, encryptedPassword } = await getToken$HashedPswd(
-      {
-        userName,
-        email,
-      },
+    const { token, encryptedPswd } = await getToken$HashedPswd(
+      userName,
       password
     )
     const user = await userModel.create({
       name,
       userName,
-      password: encryptedPassword,
+      password: encryptedPswd,
       email,
     })
     user.token = token
