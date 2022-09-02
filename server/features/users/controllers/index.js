@@ -27,11 +27,7 @@ const signIn = async (req, res) => {
     const user = await userModel.findOne({ userName })
     if (!user) return authenticationFailed(res, "User does not exist")
     const result = await bcrypt.compare(password, user.password)
-    if (!result)
-      return res.status(401).json({
-        authenticated: false,
-        message: "User authentication has failed: Password is incorrect",
-      })
+    if (!result) return authenticationFailed(res, "Password is incorrect")
     return res.status(200).json({ authenticated: true, user })
   } catch (error) {
     return res
