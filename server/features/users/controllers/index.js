@@ -13,7 +13,7 @@ const signUp = async (req, res) => {
       password: encryptedPassword,
       email,
     })
-    const token = await generateToken({ userName, name, email })
+    const token = await generateToken({ userName })
     user.token = token
     res.status(200).json({ userCreated: true, user })
   } catch (err) {
@@ -28,6 +28,8 @@ const signIn = async (req, res) => {
     if (!user) return authenticationFailed(res, "User does not exist")
     const result = await bcrypt.compare(password, user.password)
     if (!result) return authenticationFailed(res, "Password is incorrect")
+    const token = await generateToken({ userName })
+    user.token = token
     return res.status(200).json({ authenticated: true, user })
   } catch (error) {
     return res

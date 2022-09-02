@@ -5,7 +5,7 @@ const generateToken = async (payload) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "2h",
     })
-    return { token, encryptedPassword }
+    return token
   } catch (error) {
     console.log(error.message)
   }
