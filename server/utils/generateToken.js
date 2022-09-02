@@ -1,9 +1,7 @@
-const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
-const getToken$HashedPswd = async (payload, password) => {
+const generateToken = async (payload) => {
   try {
-    const encryptedPassword = await bcrypt.hash(password, 10)
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "2h",
     })
@@ -13,4 +11,4 @@ const getToken$HashedPswd = async (payload, password) => {
   }
 }
 
-module.exports = getToken$HashedPswd
+module.exports = generateToken

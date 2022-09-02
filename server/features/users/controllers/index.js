@@ -1,17 +1,16 @@
 const userModel = require("../model")
-const getToken$HashedPswd = require("../../../utils/getTokenPswd")
+const bcrypt = require("bcrypt")
+const generateToken = require("../../../utils/generateToken")
 
 const signUp = async (req, res) => {
   const { name, userName, password, email } = req.body
   try {
-    const { token, encryptedPswd } = await getToken$HashedPswd(
-      userName,
-      password
-    )
+    const encryptedPassword = await bcrypt.hash(password, 10)
+    const token = await generateToken({ userName, name, email })
     const user = await userModel.create({
       name,
       userName,
-      password: encryptedPswd,
+      password: encryptedPassword,
       email,
     })
     user.token = token
@@ -20,6 +19,8 @@ const signUp = async (req, res) => {
     res.status(400).json({ success: false, msg: err.message })
   }
 }
+
+const signIn = async (req, res) => {}
 
 const userControls = {
   signUp,
