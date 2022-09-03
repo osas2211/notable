@@ -24,7 +24,7 @@ const signUp = async (req, res) => {
 const signIn = async (req, res) => {
   const { userName, password } = req.body
   try {
-    const user = await userModel.findOne({ userName })
+    const user = await userModel.findOne({ userName }).populate("notes")
     if (!user) return authenticationFailed(res, "User does not exist")
     const result = await bcrypt.compare(password, user.password)
     if (!result) return authenticationFailed(res, "Password is incorrect")
@@ -38,9 +38,17 @@ const signIn = async (req, res) => {
   }
 }
 
+const getUser = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.params.userID).populate("notes")
+    return res.status(200).json({ user })
+  } catch (error) {}
+}
+
 const userControls = {
   signUp,
   signIn,
+  getUser,
 }
 
 module.exports = userControls

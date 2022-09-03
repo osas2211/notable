@@ -4,6 +4,7 @@ const cors = require("cors")
 const connectDB = require("./db/connectDB")
 const startApp = require("./utils/startApp")
 const userRoutes = require("./features/users/routes")
+const noteRoutes = require("./features/notes/routes")
 const app = express()
 
 // essential middlewares
@@ -12,6 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use("/api/v1/user", userRoutes)
+app.use("/api/v1", noteRoutes)
 
 const PORT = process.env.PORT || 4000
 

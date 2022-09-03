@@ -17,6 +17,7 @@ const userSchema = new Schema({
     required: [true, "userName is required"],
     unique: [true, "userName already exist"],
   },
+
   password: {
     type: String,
     required: [true, "Password is required"],
@@ -25,10 +26,13 @@ const userSchema = new Schema({
     type: String,
     default: "",
   },
-  notes: {
-    type: [],
-    default: [],
-  },
+  notes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Note",
+    },
+  ],
+
   quicknotes: {
     type: [],
     default: [],
