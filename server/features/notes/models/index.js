@@ -14,6 +14,12 @@ const noteSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  collaborators: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 })
 
 module.exports = model("Note", noteSchema)

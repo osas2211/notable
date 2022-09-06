@@ -1,5 +1,10 @@
 const { Schema, model } = require("mongoose")
 
+const reference_notes = {
+  type: Schema.Types.ObjectId,
+  ref: "Note",
+}
+
 const userSchema = new Schema({
   name: {
     type: String,
@@ -26,17 +31,25 @@ const userSchema = new Schema({
     type: String,
     default: "",
   },
-  notes: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Note",
-    },
-  ],
 
+  notes: [reference_notes],
+  collab_notes: [reference_notes],
   quicknotes: {
     type: [],
     default: [],
   },
+
+  invitations: [
+    new Schema({
+      noteID: {
+        type: String,
+      },
+      ownerID: {
+        type: String,
+      },
+    }),
+  ],
+
   token: {
     type: String,
   },
