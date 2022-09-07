@@ -50,18 +50,24 @@ const inviteCollaborator = async (req, res) => {
   try {
     const owner = await userModel.findById(ownerID)
     const user = await userModel.findOne({ userName })
+    const note = await noteModel.findById(noteID)
     const isInvited = user.invitations.filter((invitation) => {
       return invitation.noteID === noteID
     })[0]
-    const isCollaborator = (await owner.populate("notes")).notes.filter(
-      (note) => {
-        return note.collaborator === user._id
-      }
-    )[0]
+    const isCollaborator = note.collaborators.filter((collaborator) => {
+      return String(collaborator) === String(user._id)
+    })[0]
 
     //send invitation only if the noteID does not appear in user invitations
-    //or user is not a note collaborators
-    if (isInvited === undefined || isCollaborator !== undefined) {
+    //or user is not a note collaborator
+    if (isCollaborator) {
+      return res.status(400).json({
+        accepted: false,
+        message: "User is already a Collaborator",
+      })
+    }
+    if (!isInvited) {
+      // add invitation to user's invitations
       await user.updateOne(
         {
           $push: {
@@ -73,11 +79,12 @@ const inviteCollaborator = async (req, res) => {
         },
         { new: true }
       )
+      user.save()
       return res.status(200).json({ invitation_sent: true, owner })
     }
     return res.status(400).json({
       invitation_sent: false,
-      message: "User is already a Collaborator",
+      message: "User has already been Invited",
     })
   } catch (error) {
     res.status(400).json({ message: error.message })
@@ -91,26 +98,51 @@ const acceptInvitation = async (req, res) => {
   try {
     const user = await userModel.findById(userID)
     const note = await noteModel.findById(noteID)
-    await user.updateOne(
-      {
-        $push: {
-          collab_notes: noteID,
+    const isCollaborator = note.collaborators.filter((collaborator) => {
+      return String(collaborator) === String(user._id)
+    })[0]
+    const isInvited = user.invitations.filter((invitation) => {
+      return invitation.noteID === noteID
+    })[0]
+
+    if (isCollaborator) {
+      return res.status(400).json({
+        accepted: false,
+        message: "You're already a Collaborator",
+      })
+    }
+    if (isInvited) {
+      // Add note to collab notes
+      await user.updateOne(
+        {
+          $push: {
+            collab_notes: noteID,
+          },
+          // remove invitation since it's now accepted
+          $pull: {
+            invitations: { noteID: noteID },
+          },
         },
-        $pull: {
-          invitations: { noteID: noteID },
+        { new: true }
+      )
+
+      // add collaborator to notes collaborators
+      await note.updateOne(
+        {
+          $push: {
+            collaborators: userID,
+          },
         },
-      },
-      { new: true }
-    )
-    await note.updateOne(
-      {
-        $push: {
-          collaborators: userID,
-        },
-      },
-      { new: true }
-    )
-    res.status(200).json({ accepted: true, user })
+        { new: true }
+      )
+      user.save()
+      note.save()
+      return res.status(200).json({ accepted: true, user })
+    }
+    return res.status(400).json({
+      accepted: false,
+      message: "You've not been invited to collaborate in this note",
+    })
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
