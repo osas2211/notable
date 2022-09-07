@@ -47,6 +47,9 @@ const userSchema = new Schema({
       ownerID: {
         type: String,
       },
+      label: {
+        type: String,
+      },
     }),
   ],
 
