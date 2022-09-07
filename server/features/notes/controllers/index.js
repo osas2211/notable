@@ -21,6 +21,17 @@ const createNote = async (req, res) => {
   }
 }
 
+//GET Get Note
+const getNote = async (req, res) => {
+  const noteID = req.params.noteID
+  try {
+    const note = await noteModel.findById(noteID)
+    res.status(200).json(note)
+  } catch (error) {
+    res.status(404).json({ message: error.message })
+  }
+}
+
 //GET Get Notes
 const getNotes = async (req, res) => {
   try {
@@ -107,6 +118,7 @@ const acceptInvitation = async (req, res) => {
 
 const noteControls = {
   createNote,
+  getNote,
   getNotes,
   inviteCollaborator,
   acceptInvitation,
