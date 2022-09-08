@@ -1,6 +1,8 @@
 const noteModel = require("../models")
 const userModel = require("../../users/model")
 
+// ****************************** CRUD CONTROLS ******************************
+
 // POST Create a Note
 const createNote = async (req, res) => {
   const { userID } = req.params
@@ -15,7 +17,7 @@ const createNote = async (req, res) => {
     await userModel.findByIdAndUpdate(userID, {
       $push: { notes: note.id },
     })
-    res.status(200).json({ created: true, note })
+    res.status(201).json({ created: true, note })
   } catch (error) {
     res.status(400).json({ created: false, message: error.message })
   }
@@ -42,6 +44,14 @@ const getNotes = async (req, res) => {
   }
 }
 
+// PUT Update Note
+const updateNote = async (req, res) => {}
+
+// DELETE Delete Note
+const deleteNote = async (req, res) => {}
+
+// *************************** COLLABORATION CONTROLS ***************************
+
 // PUT Invite Collaborators
 const inviteCollaborator = async (req, res) => {
   const userName = req.body.userName
@@ -51,18 +61,14 @@ const inviteCollaborator = async (req, res) => {
     const owner = await userModel.findById(ownerID)
     const user = await userModel.findOne({ userName })
     const note = await noteModel.findById(noteID)
-    const isInvited = user.invitations.filter((invitation) => {
-      return invitation.noteID === noteID
-    })[0]
-    const isCollaborator = note.collaborators.filter((collaborator) => {
-      return String(collaborator) === String(user._id)
-    })[0]
+    const isInvited = user.invitations.includes(noteID)
+    const isCollaborator = note.collaborators.includes(String(user._id))
 
     //send invitation only if the noteID does not appear in user invitations
     //or user is not a note collaborator
     if (isCollaborator) {
       return res.status(400).json({
-        accepted: false,
+        invitation_sent: false,
         message: "User is already a Collaborator",
       })
     }
@@ -79,7 +85,6 @@ const inviteCollaborator = async (req, res) => {
         },
         { new: true }
       )
-      user.save()
       return res.status(200).json({ invitation_sent: true, owner })
     }
     return res.status(400).json({
@@ -98,12 +103,8 @@ const acceptInvitation = async (req, res) => {
   try {
     const user = await userModel.findById(userID)
     const note = await noteModel.findById(noteID)
-    const isCollaborator = note.collaborators.filter((collaborator) => {
-      return String(collaborator) === String(user._id)
-    })[0]
-    const isInvited = user.invitations.filter((invitation) => {
-      return invitation.noteID === noteID
-    })[0]
+    const isCollaborator = note.collaborators.includes(String(user._id))
+    const isInvited = user.invitations.includes(noteID)
 
     if (isCollaborator) {
       return res.status(400).json({
@@ -135,8 +136,6 @@ const acceptInvitation = async (req, res) => {
         },
         { new: true }
       )
-      user.save()
-      note.save()
       return res.status(200).json({ accepted: true, user })
     }
     return res.status(400).json({
@@ -152,6 +151,8 @@ const noteControls = {
   createNote,
   getNote,
   getNotes,
+  updateNote,
+  deleteNote,
   inviteCollaborator,
   acceptInvitation,
 }
