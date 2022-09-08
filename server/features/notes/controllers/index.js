@@ -78,7 +78,7 @@ const deleteNote = async (req, res) => {
     // remove note ref from owner's notes
     await userModel.findByIdAndUpdate(owner, { $pull: { notes: noteID } })
 
-    // remove note ref from collaborators collab_notes
+    // remove note ref from collaborators collab_notes.
     await userModel.updateMany(
       { _id: collaborators },
       { $pull: { collab_notes: noteID } }
