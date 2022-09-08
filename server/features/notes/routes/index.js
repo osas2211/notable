@@ -6,6 +6,7 @@ router.post("/:userID/create-note", noteControls.createNote)
 router.get("/notes/:noteID", noteControls.getNote)
 router.get("/notes", noteControls.getNotes)
 router.put("/notes/:noteID", noteControls.updateNote)
+router.delete("/notes/:noteID", noteControls.deleteNote)
 router.put("/notes/:userID/invite", noteControls.inviteCollaborator)
 router.post("/notes/:noteID/accept-invitation", noteControls.acceptInvitation)
 

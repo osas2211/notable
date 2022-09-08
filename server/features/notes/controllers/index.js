@@ -56,7 +56,6 @@ const updateNote = async (req, res) => {
   const { label, textContent, imgUrl } = req.body
   const noteID = req.params.noteID
   try {
-    const note = await noteModel.findById(noteID)
     if (label) {
       return await updateFunc(noteID, "label", label, res)
     }
@@ -69,7 +68,29 @@ const updateNote = async (req, res) => {
 }
 
 // DELETE Delete Note
-const deleteNote = async (req, res) => {}
+const deleteNote = async (req, res) => {
+  const noteID = req.params.noteID
+  try {
+    const note = await noteModel.findById(noteID)
+    const owner = note.owner
+    const collaborators = note.collaborators
+
+    // remove note ref from owner's notes
+    await userModel.findByIdAndUpdate(owner, { $pull: { notes: noteID } })
+
+    // remove note ref from collaborators collab_notes
+    await userModel.updateMany(
+      { _id: collaborators },
+      { $pull: { collab_notes: noteID } }
+    )
+
+    // delete note
+    await noteModel.findByIdAndDelete(noteID)
+    res.status(200).json({ deleted: true })
+  } catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+}
 
 // *************************** COLLABORATION CONTROLS ***************************
 
@@ -82,7 +103,10 @@ const inviteCollaborator = async (req, res) => {
     const owner = await userModel.findById(ownerID)
     const user = await userModel.findOne({ userName })
     const note = await noteModel.findById(noteID)
-    const isInvited = user.invitations.includes(noteID)
+    const isInvited = user.invitations.some((invitation) => {
+      if (String(invitation.noteID) === noteID) return true
+      else return false
+    })
     const isCollaborator = note.collaborators.includes(String(user._id))
 
     //send invitation only if the noteID does not appear in user invitations
@@ -98,10 +122,7 @@ const inviteCollaborator = async (req, res) => {
       await user.updateOne(
         {
           $push: {
-            invitations: {
-              ownerID: ownerID,
-              noteID: noteID,
-            },
+            invitations: { ownerID: ownerID, noteID: noteID },
           },
         },
         { new: true }
@@ -125,7 +146,10 @@ const acceptInvitation = async (req, res) => {
     const user = await userModel.findById(userID)
     const note = await noteModel.findById(noteID)
     const isCollaborator = note.collaborators.includes(String(user._id))
-    const isInvited = user.invitations.includes(noteID)
+    const isInvited = user.invitations.some((invitation) => {
+      if (String(invitation.noteID) === noteID) return true
+      else return false
+    })
 
     if (isCollaborator) {
       return res.status(400).json({
@@ -137,13 +161,9 @@ const acceptInvitation = async (req, res) => {
       // Add note to collab notes
       await user.updateOne(
         {
-          $push: {
-            collab_notes: noteID,
-          },
+          $push: { collab_notes: noteID },
           // remove invitation since it's now accepted
-          $pull: {
-            invitations: { noteID: noteID },
-          },
+          $pull: { invitations: { noteID: noteID } },
         },
         { new: true }
       )
@@ -151,9 +171,7 @@ const acceptInvitation = async (req, res) => {
       // add collaborator to notes collaborators
       await note.updateOne(
         {
-          $push: {
-            collaborators: userID,
-          },
+          $push: { collaborators: userID },
         },
         { new: true }
       )
