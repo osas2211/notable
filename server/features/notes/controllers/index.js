@@ -1,6 +1,13 @@
 const noteModel = require("../models")
 const userModel = require("../../users/model")
 
+const updateFunc = async (id, field, content, response) => {
+  const note = await noteModel.findById(id)
+  await note.updateOne({ $set: { [field]: content } }, { new: true })
+  note[field] = content
+  return response.status(200).json({ updated: true, note: note })
+}
+
 // ****************************** CRUD CONTROLS ******************************
 
 // POST Create a Note
@@ -45,7 +52,21 @@ const getNotes = async (req, res) => {
 }
 
 // PUT Update Note
-const updateNote = async (req, res) => {}
+const updateNote = async (req, res) => {
+  const { label, textContent, imgUrl } = req.body
+  const noteID = req.params.noteID
+  try {
+    const note = await noteModel.findById(noteID)
+    if (label) {
+      return await updateFunc(noteID, "label", label, res)
+    }
+    if (textContent) {
+      return await updateFunc(noteID, "textContent", textContent, res)
+    }
+  } catch (error) {
+    res.status(400).json({ updated: false, message: error.message })
+  }
+}
 
 // DELETE Delete Note
 const deleteNote = async (req, res) => {}
