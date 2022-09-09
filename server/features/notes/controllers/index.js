@@ -127,6 +127,8 @@ const inviteCollaborator = async (req, res) => {
         },
         { new: true }
       )
+      owner.password = null
+      owner.password = null
       return res.status(200).json({ invitation_sent: true, owner })
     }
     return res.status(400).json({
@@ -175,6 +177,8 @@ const acceptInvitation = async (req, res) => {
         },
         { new: true }
       )
+      user.password = null
+      user.token = null
       return res.status(200).json({ accepted: true, user })
     }
     return res.status(400).json({
