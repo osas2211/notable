@@ -1,11 +1,17 @@
 const noteModel = require("../models")
 const userModel = require("../../users/model")
 
-const updateFunc = async (id, field, content, response) => {
+const updateFunc = async (id, field, content, request, response) => {
   const note = await noteModel.findById(id)
-  await note.updateOne({ $set: { [field]: content } }, { new: true })
-  note[field] = content
-  return response.status(200).json({ updated: true, note: note })
+  if (String(note.owner) === request.user.id) {
+    await note.updateOne({ $set: { [field]: content } }, { new: true })
+    note[field] = content
+    return response.status(200).json({ updated: true, note: note })
+  } else {
+    return response
+      .status(401)
+      .json({ updated: false, message: "Unauthorized Request" })
+  }
 }
 
 // ****************************** CRUD CONTROLS ******************************
@@ -57,10 +63,10 @@ const updateNote = async (req, res) => {
   const noteID = req.params.noteID
   try {
     if (label) {
-      return await updateFunc(noteID, "label", label, res)
+      return await updateFunc(noteID, "label", label, req, res)
     }
     if (textContent) {
-      return await updateFunc(noteID, "textContent", textContent, res)
+      return await updateFunc(noteID, "textContent", textContent, req, res)
     }
   } catch (error) {
     res.status(400).json({ updated: false, message: error.message })
@@ -92,7 +98,7 @@ const deleteNote = async (req, res) => {
       res.status(401).json({ deleted: false, message: "Unauthorized request." })
     }
   } catch (error) {
-    res.status(400).json({ message: error.message })
+    res.status(400).json({ deleted: false, message: error.message })
   }
 }
 
