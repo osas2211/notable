@@ -5,6 +5,7 @@ const connectDB = require("./db/connectDB")
 const startApp = require("./utils/startApp")
 const userRoutes = require("./features/users/routes")
 const noteRoutes = require("./features/notes/routes")
+const auth = require("./middlewares/auth")
 const app = express()
 
 // essential middlewares
@@ -13,7 +14,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use("/api/v1/user", userRoutes)
-app.use("/api/v1", noteRoutes)
+app.use("/api/v1", auth, noteRoutes)
 
 const PORT = process.env.PORT || 4000
 

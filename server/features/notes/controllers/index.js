@@ -12,7 +12,7 @@ const updateFunc = async (id, field, content, response) => {
 
 // POST Create a Note
 const createNote = async (req, res) => {
-  const { userID } = req.params
+  const userID = req.user.id
   const { label, imgUrl, textContent } = req.body
   try {
     const note = await noteModel.create({
@@ -44,8 +44,8 @@ const getNote = async (req, res) => {
 //GET Get Notes
 const getNotes = async (req, res) => {
   try {
-    const notes = await noteModel.find({}) //.populate("owner")
-    return res.status(200).json({ notes })
+    const notes = await noteModel.find({ owner: req.user.id }) //.populate("owner")
+    return res.status(200).json({ notes, user: req.user })
   } catch (error) {
     res.status(404).json({ message: error.message })
   }
@@ -73,20 +73,24 @@ const deleteNote = async (req, res) => {
   try {
     const note = await noteModel.findById(noteID)
     const owner = note.owner
-    const collaborators = note.collaborators
+    if (String(owner) === req.user.id) {
+      const collaborators = note.collaborators
 
-    // remove note ref from owner's notes
-    await userModel.findByIdAndUpdate(owner, { $pull: { notes: noteID } })
+      // remove note ref from owner's notes
+      await userModel.findByIdAndUpdate(owner, { $pull: { notes: noteID } })
 
-    // remove note ref from collaborators collab_notes.
-    await userModel.updateMany(
-      { _id: collaborators },
-      { $pull: { collab_notes: noteID } }
-    )
+      // remove note ref from collaborators collab_notes.
+      await userModel.updateMany(
+        { _id: collaborators },
+        { $pull: { collab_notes: noteID } }
+      )
 
-    // delete note
-    await noteModel.findByIdAndDelete(noteID)
-    res.status(200).json({ deleted: true })
+      // delete note
+      await noteModel.findByIdAndDelete(noteID)
+      res.status(200).json({ deleted: true })
+    } else {
+      res.status(401).json({ deleted: false, message: "Unauthorized request." })
+    }
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
@@ -96,8 +100,8 @@ const deleteNote = async (req, res) => {
 
 // PUT Invite Collaborators
 const inviteCollaborator = async (req, res) => {
+  const ownerID = req.user.id
   const userName = req.body.userName
-  const ownerID = req.params.userID
   const noteID = req.body.noteID
   try {
     const owner = await userModel.findById(ownerID)
@@ -128,7 +132,7 @@ const inviteCollaborator = async (req, res) => {
         { new: true }
       )
       owner.password = null
-      owner.password = null
+      owner.token = null
       return res.status(200).json({ invitation_sent: true, owner })
     }
     return res.status(400).json({
