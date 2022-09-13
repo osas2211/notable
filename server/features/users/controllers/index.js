@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt")
 const generateToken = require("../../../utils/generateToken")
 const authenticationFailed = require("../../../utils/authenticationFailed")
 
+/********************************* AUTHENTICATION CONTROLS *********************************/
 const signUp = async (req, res) => {
   const { name, userName, password, email } = req.body
   try {
@@ -38,17 +39,38 @@ const signIn = async (req, res) => {
   }
 }
 
+/********************************* AUTHENTICATION CONTROLS *********************************/
+
 const getUser = async (req, res) => {
   try {
     const user = await userModel.findById(req.params.userID).populate("notes")
     return res.status(200).json({ user })
-  } catch (error) {}
+  } catch (error) {
+    return res.status(400).json({ message: error.message })
+  }
+}
+
+const updateProfile = async (req, res) => {
+  const userID = req.user.id
+  const image = req.file
+  try {
+    const user = await userModel.findByIdAndUpdate(
+      userID,
+      { $set: { avatarURL: image.path } },
+      { new: true }
+    )
+
+    return res.status(200).json({ success: true, image })
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message })
+  }
 }
 
 const userControls = {
   signUp,
   signIn,
   getUser,
+  updateProfile,
 }
 
 module.exports = userControls
