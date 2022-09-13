@@ -50,7 +50,7 @@ const getNote = async (req, res) => {
 //GET Get Notes
 const getNotes = async (req, res) => {
   try {
-    const notes = await noteModel.find({ owner: req.user.id }) //.populate("owner")
+    const notes = await noteModel.find({ owner: req.user.id }).sort("-created") //.populate("owner")
     return res.status(200).json({ notes, user: req.user })
   } catch (error) {
     res.status(404).json({ message: error.message })

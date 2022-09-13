@@ -10,9 +10,9 @@ const noteSchema = new Schema({
   textContent: {
     type: String,
   },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+  created: {
+    type: String,
+    default: new Date().toISOString(),
   },
   collaborators: [
     {
