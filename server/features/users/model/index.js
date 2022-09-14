@@ -34,10 +34,19 @@ const userSchema = new Schema({
 
   notes: [reference_notes],
   collab_notes: [reference_notes],
-  quicknotes: {
-    type: [],
-    default: [],
-  },
+  quicknotes: [
+    new Schema({
+      body: {
+        type: String,
+        min: [5, "total characters must be more than 5"],
+        max: [300, "total characters must be less than 300"],
+      },
+      created: {
+        type: String,
+        default: new Date().toISOString(),
+      },
+    }),
+  ],
 
   invitations: [
     new Schema({
