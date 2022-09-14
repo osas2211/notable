@@ -50,4 +50,26 @@ router.put("/quick-note/:id", async (req, res) => {
   }
 })
 
+// DELETE delete quicknote
+router.delete("/quick-note/:id", async (req, res) => {
+  const quickNoteID = req.params.id
+  const userID = req.user.id
+  try {
+    const user = await userModel.findByIdAndUpdate(
+      userID,
+      {
+        $pull: { quicknotes: { _id: quickNoteID } },
+      },
+      { new: true }
+    )
+    await user.save()
+    res.status(200).json({
+      deleted: true,
+      user: user.quicknotes,
+    })
+  } catch (error) {
+    res.status(400).json({ deleted: false, message: error.message })
+  }
+})
+
 module.exports = router
