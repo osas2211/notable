@@ -57,7 +57,7 @@ const verifyEmail = async (req, res) => {
         .json({ email_verified: false, message: "invalid parameters" })
     }
   } catch (error) {
-    res.status(400).json({ email_verified: false, message: err.message })
+    res.status(400).json({ email_verified: false, message: error.message })
   }
 }
 
