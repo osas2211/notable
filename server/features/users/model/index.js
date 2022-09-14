@@ -56,6 +56,17 @@ const userSchema = new Schema({
   token: {
     type: String,
   },
+  otp: {
+    type: String,
+  },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
+  theme: {
+    type: String,
+    default: "light",
+  },
 })
 
 module.exports = model("User", userSchema)

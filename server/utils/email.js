@@ -10,7 +10,7 @@ module.exports.sendEmail = async (to_mail, subject, body) => {
       },
     })
     await transporter.sendMail({
-      from: process.env.MAIL,
+      from: `"Notelify App"  ${process.env.MAIL}`,
       to: to_mail,
       subject: subject,
       html: body,
@@ -19,6 +19,4 @@ module.exports.sendEmail = async (to_mail, subject, body) => {
   } catch (error) {
     console.log(error.message)
   }
-
-  return transporter
 }
