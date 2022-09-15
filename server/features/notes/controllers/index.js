@@ -216,6 +216,19 @@ const acceptInvitation = async (req, res) => {
   }
 }
 
+const rejectInvitation = async (req, res) => {
+  const userID = req.user.id
+  const noteID = req.params.noteID
+  try {
+    await userModel.findByIdAndUpdate(userID, {
+      $pull: { invitations: { noteID: noteID } },
+    })
+    res.status(200).json({ success: true, message: "Inivitation rejected" })
+  } catch (error) {
+    res.status(200).json({ success: false, message: error.message })
+  }
+}
+
 const noteControls = {
   createNote,
   getNote,
@@ -224,6 +237,7 @@ const noteControls = {
   deleteNote,
   inviteCollaborator,
   acceptInvitation,
+  rejectInvitation,
 }
 
 module.exports = noteControls
