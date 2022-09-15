@@ -16,6 +16,12 @@ router.put(
   upload.single("image"),
   userControls.updateProfile
 )
-router.delete("/delete", userControls.deleteAccount)
+router.post("/reset-password", auth, userControls.resetPassword)
+router.post(
+  "/reset-password/verify-pin",
+  auth,
+  userControls.verifyPasswordResetPin
+)
+router.delete("/delete", auth, userControls.deleteAccount)
 
 module.exports = router

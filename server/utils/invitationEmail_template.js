@@ -1,4 +1,4 @@
-module.exports.invitationEmail = (link, name, owner_userName) => {
+module.exports.invitationEmail = (link, name, owner_userName, label) => {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -24,7 +24,7 @@ module.exports.invitationEmail = (link, name, owner_userName) => {
         <h4 class="text-center mt-5">Notelify</h4>
         <div class="w-75 p-4 m-auto my-5 bg-light">
           <p class="fw-bold" style="text-transform: capitalize;">Hello, ${name}</p>
-          <p>Please click the button below to Accept the Note Collaboration sent by user ${owner_userName}.</p>
+          <p>Please click the button below to Accept the Invitation sent by user ${owner_userName} to collaborate on "${label}".</p>
           <div
             style="
               display: flex;

@@ -128,7 +128,8 @@ const inviteCollaborator = async (req, res) => {
       ${process.env.BASE_URL}/notes/${note._id}/accept-invitation
     `,
       user.name,
-      owner.userName
+      owner.userName,
+      note.label
     )
 
     //send invitation only if the noteID does not appear in user invitations

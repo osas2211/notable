@@ -52,7 +52,9 @@ const verifyEmail = async (req, res) => {
         .json({ email_verified: true, message: "user is already verified" })
     }
     if (user && user.otp === otp) {
-      await user.updateOne({ $set: { verified: true, otp: "" } })
+      await user.updateOne({
+        $set: { verified: true, otp: user.token.slice(0, 10) },
+      })
       return res.status(200).json({ email_verified: true })
     } else {
       return res
@@ -82,7 +84,7 @@ const signIn = async (req, res) => {
   }
 }
 
-/********************************* AUTHENTICATION CONTROLS *********************************/
+/********************************* IN-APP CONTROLS *********************************/
 
 const getUser = async (req, res) => {
   try {
@@ -109,6 +111,59 @@ const updateProfile = async (req, res) => {
   }
 }
 
+const resetPassword = async (req, res) => {
+  const userID = req.user.id
+  const generatedOTP = generateOTP(6, {
+    digits: true,
+    lowerCaseAlphabets: false,
+    upperCaseAlphabets: false,
+    specialChars: false,
+  })
+  try {
+    const user = await userModel.findByIdAndUpdate(userID, {
+      $set: { otp: generatedOTP },
+    })
+    const htmlBody = `
+      <p style="text-transform: capitalize;">Hello, ${user.name}</p>
+      <p>Your password reset pin is down below.</p>
+      <h2>${generatedOTP}</h2>
+      <p>If you didn't ask to reset your password, you can ignore this mail.</p>
+      <div>
+        <p>Best Regards,</p>
+        <p>Notelify.</p>
+      </div>
+    `
+    await sendEmail(user.email, "Reset Password", htmlBody)
+    res.status(200).json({
+      success: true,
+      message: `Password Reset pin sent to your email ${user.email}`,
+    })
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message })
+  }
+}
+
+const verifyPasswordResetPin = async (req, res) => {
+  const userID = req.user.id
+  const { password, otp } = req.body
+  try {
+    const user = await userModel.findById(userID)
+    const encryptedPassword = await bcrypt.hash(password, 10)
+    if (user && user.otp === otp) {
+      await user.updateOne({
+        $set: { password: encryptedPassword, otp: user.token.slice(0, 10) },
+      })
+      return res.status(200).json({ password_reset: true })
+    } else {
+      return res
+        .status(400)
+        .json({ password_reset: false, message: "invalid otp" })
+    }
+  } catch (error) {
+    res.status(400).json({ password_reset: false, message: error.message })
+  }
+}
+
 const deleteAccount = async (req, res) => {
   const id = req.body.id
   try {
@@ -125,6 +180,8 @@ const userControls = {
   signIn,
   getUser,
   updateProfile,
+  resetPassword,
+  verifyPasswordResetPin,
   deleteAccount,
 }
 
