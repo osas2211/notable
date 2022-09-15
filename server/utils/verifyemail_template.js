@@ -1,4 +1,4 @@
-module.exports.EmailVerificationTemplate = (link) => {
+module.exports.EmailVerificationTemplate = (link, name) => {
   return `
     <!DOCTYPE html>
   <html lang="en">
@@ -19,10 +19,22 @@ module.exports.EmailVerificationTemplate = (link) => {
     <body>
       <h4 class="text-center mt-5">Notelify</h4>
       <div class="w-75 p-4 m-auto my-5 bg-light">
-        <p class="fw-bold">Hello</p>
+        <p class="fw-bold" style="text-transform: capitalize;>Hello, ${name}</p>
         <p>Please click the button below to verify your email address.</p>
-        <div class="d-flex justify-content-center align-items-center my-4">
-          <a href="${link}" class="btn btn-secondary text-center">Verify Email Address</a>
+        <div style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 1rem;
+          "
+        >
+          <a href="${link}" style="
+            background-color: rgba(26, 24, 24, 0.877);
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: white;
+          ">Verify Email Address</a>
         </div>
         <p>If you did not create an account, no further action is required.</p>
         <div><p class="mb-0">Regards,</p> <p class="mt-0">Notelify.</p></div>

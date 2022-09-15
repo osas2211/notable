@@ -27,9 +27,12 @@ const signUp = async (req, res) => {
     user.token = token
 
     // Send Email Verification Message.
-    const htmlBody = EmailVerificationTemplate(`
+    const htmlBody = EmailVerificationTemplate(
+      `
       ${process.env.BASE_URL}/user/email/verify/${user._id}/${otp}
-    `)
+    `,
+      name
+    )
     await sendEmail(email, "Verify Email Address", htmlBody)
     res.status(201).json({ userCreated: true, user })
   } catch (err) {

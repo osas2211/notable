@@ -7,7 +7,7 @@ router.get("/notes/:noteID", noteControls.getNote)
 router.get("/notes", noteControls.getNotes)
 router.put("/notes/:noteID", noteControls.updateNote)
 router.delete("/notes/:noteID", noteControls.deleteNote)
-router.put("/notes/invite", noteControls.inviteCollaborator)
+router.post("/notes/invite", noteControls.inviteCollaborator)
 router.post("/notes/:noteID/accept-invitation", noteControls.acceptInvitation)
 
 module.exports = router

@@ -10,7 +10,19 @@ const noteSchema = new Schema({
   textContent: {
     type: String,
   },
+  favourite: {
+    type: Boolean,
+    default: false,
+  },
+  archive: {
+    type: Boolean,
+    default: false,
+  },
   created: {
+    type: String,
+    default: new Date().toISOString(),
+  },
+  last_edited: {
     type: String,
     default: new Date().toISOString(),
   },

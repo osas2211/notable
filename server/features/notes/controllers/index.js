@@ -1,10 +1,15 @@
 const noteModel = require("../models")
 const userModel = require("../../users/model")
+const { sendEmail } = require("../../../utils/email")
+const { invitationEmail } = require("../../../utils/invitationEmail_template")
 
 const updateFunc = async (id, field, content, request, response) => {
   const note = await noteModel.findById(id)
   if (String(note.owner) === request.user.id) {
-    await note.updateOne({ $set: { [field]: content } }, { new: true })
+    await note.updateOne(
+      { $set: { [field]: content, last_edited: new Date().toISOString() } },
+      { new: true }
+    )
     note[field] = content
     return response.status(200).json({ updated: true, note: note })
   } else {
@@ -118,6 +123,13 @@ const inviteCollaborator = async (req, res) => {
       else return false
     })
     const isCollaborator = note.collaborators.includes(String(user._id))
+    const htmlBody = invitationEmail(
+      `
+      ${process.env.BASE_URL}/notes/${note._id}/accept-invitation
+    `,
+      user.name,
+      owner.userName
+    )
 
     //send invitation only if the noteID does not appear in user invitations
     //or user is not a note collaborator
@@ -137,6 +149,9 @@ const inviteCollaborator = async (req, res) => {
         },
         { new: true }
       )
+      // send Email
+      await sendEmail(user.email, "Invitation - Note Collaboration", htmlBody)
+
       owner.password = null
       owner.token = null
       return res.status(200).json({ invitation_sent: true, owner })
