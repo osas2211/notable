@@ -10,5 +10,9 @@ router.delete("/notes/:noteID", noteControls.deleteNote)
 router.post("/notes/invite", noteControls.inviteCollaborator)
 router.post("/notes/:noteID/accept-invitation", noteControls.acceptInvitation)
 router.post("/notes/:noteID/reject-invitation", noteControls.rejectInvitation)
+router.post(
+  "/notes/:noteID/leave-collaboration",
+  noteControls.leaveCollaboration
+)
 
 module.exports = router

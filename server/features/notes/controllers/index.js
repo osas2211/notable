@@ -46,9 +46,9 @@ const getNote = async (req, res) => {
   const noteID = req.params.noteID
   try {
     const note = await noteModel.findById(noteID)
-    res.status(200).json(note)
+    res.status(200).json({ success: true, note })
   } catch (error) {
-    res.status(404).json({ message: error.message })
+    res.status(404).json({ success: false, message: error.message })
   }
 }
 
@@ -56,9 +56,9 @@ const getNote = async (req, res) => {
 const getNotes = async (req, res) => {
   try {
     const notes = await noteModel.find({ owner: req.user.id }).sort("-created") //.populate("owner")
-    return res.status(200).json({ notes, user: req.user })
+    return res.status(200).json({ success: true, notes })
   } catch (error) {
-    res.status(404).json({ message: error.message })
+    res.status(404).json({ success: false, message: error.message })
   }
 }
 
@@ -155,21 +155,23 @@ const inviteCollaborator = async (req, res) => {
 
       owner.password = null
       owner.token = null
-      return res.status(200).json({ invitation_sent: true, owner })
+      return res
+        .status(200)
+        .json({ invitation_sent: true, message: "Invitation sent" })
     }
     return res.status(400).json({
       invitation_sent: false,
       message: "User has already been Invited",
     })
   } catch (error) {
-    res.status(400).json({ message: error.message })
+    res.status(400).json({ invitation_sent: false, message: error.message })
   }
 }
 
 // POST Accept Invitation
 const acceptInvitation = async (req, res) => {
   const noteID = req.params.noteID
-  const userID = req.body.userID
+  const userID = req.user.id
   try {
     const user = await userModel.findById(userID)
     const note = await noteModel.findById(noteID)
@@ -205,14 +207,16 @@ const acceptInvitation = async (req, res) => {
       )
       user.password = null
       user.token = null
-      return res.status(200).json({ accepted: true, user })
+      return res
+        .status(200)
+        .json({ accepted: true, message: "You've accepted this invitation" })
     }
     return res.status(400).json({
       accepted: false,
       message: "You've not been invited to collaborate in this note",
     })
   } catch (error) {
-    res.status(400).json({ message: error.message })
+    res.status(400).json({ accepted: false, message: error.message })
   }
 }
 
@@ -223,9 +227,28 @@ const rejectInvitation = async (req, res) => {
     await userModel.findByIdAndUpdate(userID, {
       $pull: { invitations: { noteID: noteID } },
     })
-    res.status(200).json({ success: true, message: "Inivitation rejected" })
+    res.status(200).json({ success: true, message: "Invitation rejected" })
   } catch (error) {
-    res.status(200).json({ success: false, message: error.message })
+    res.status(400).json({ success: false, message: error.message })
+  }
+}
+
+const leaveCollaboration = async (req, res) => {
+  const userID = req.user.id
+  const noteID = req.params.noteID
+  try {
+    await userModel.findByIdAndUpdate(userID, {
+      $pull: { collab_notes: noteID },
+    })
+    await noteModel.findByIdAndUpdate(noteID, {
+      $pull: { collaborators: userID },
+    })
+    res.status(200).json({
+      success: true,
+      message: "You've left this note as a collaborator",
+    })
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message })
   }
 }
 
@@ -238,6 +261,7 @@ const noteControls = {
   inviteCollaborator,
   acceptInvitation,
   rejectInvitation,
+  leaveCollaboration,
 }
 
 module.exports = noteControls
