@@ -1,4 +1,6 @@
+const axios = require("axios").default
 const userModel = require("../model")
+const noteModel = require("../../notes/models/index")
 const bcrypt = require("bcrypt")
 const generateToken = require("../../../utils/generateToken")
 const { generateOTP } = require("../../../utils/generateOTP")
@@ -7,6 +9,7 @@ const { sendEmail } = require("../../../utils/email")
 const {
   EmailVerificationTemplate,
 } = require("../../../utils/verifyemail_template")
+const { config } = require("dotenv")
 
 /********************************* AUTHENTICATION CONTROLS *********************************/
 
@@ -165,10 +168,37 @@ const verifyPasswordResetPin = async (req, res) => {
 }
 
 const deleteAccount = async (req, res) => {
-  const id = req.body.id
+  const userID = req.user.id
   try {
-    await userModel.findByIdAndDelete(id)
-    res.status(200).json({ deleted: true })
+    const user = await userModel.findById(userID)
+
+    //Delete all user notes
+    user.notes.forEach(async (noteID) => {
+      try {
+        await axios.delete(`${process.env.BASE_URL}/notes/${noteID}`, {
+          headers: req.headers,
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    })
+
+    //Leave all notes user is collaborating on.
+    user.collab_notes.forEach(async (noteID) => {
+      try {
+        await axios.post(
+          `${process.env.BASE_URL}/notes/${noteID}/leave-collaboration`,
+          {},
+          { headers: req.headers }
+        )
+      } catch (error) {
+        console.log(error)
+      }
+    })
+
+    // Delete User
+    await user.delete()
+    res.status(200).json({ deleted: true, message: "user has been deleted" })
   } catch (error) {
     res.status(400).json({ deleted: false, message: error.message })
   }
