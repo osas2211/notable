@@ -2,6 +2,8 @@ const noteModel = require("../models")
 const userModel = require("../../users/model")
 const { sendEmail } = require("../../../utils/email")
 const { invitationEmail } = require("../../../utils/invitationEmail_template")
+const redisClient = require("../../../redis/client")
+const moment = require("moment")
 
 const updateFunc = async (id, field, content, request, response) => {
   const note = await noteModel.findById(id)

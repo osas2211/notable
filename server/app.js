@@ -8,6 +8,9 @@ const noteRoutes = require("./features/notes/routes")
 const quickNoteRoutes = require("./features/notes/quicknotes")
 const auth = require("./middlewares/auth")
 const app = express()
+const redisClient = require("./redis/client")
+
+redisClient
 
 // essential middlewares
 app.use(cors())

@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
+
+body{
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+/* Override only primary variation styles */
+.amplify-button[data-variation='primary'] {
+  background-color: #0DA2E7;
+  color: white;
+}
+
+a{
+  color: #0DA2E7;
+}
+
+.container {
+  width: 85%;
+  margin: auto;
+}
+
+.hero{
+  text-align: center;
+  margin: 5rem 0;
+}
+
+.hero h2{
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.hero small{
+  opacity: 0.7;
+}
+
+.hero .vector{
+  position: relative;
+}
+.hero .vector::after{
+  content: url("../images/Vector.png");
+  position: absolute;
+  bottom: -1.8rem;
+  left: -1.8rem;
+  transform: scale(0.7);
+}
+
+.hero-about{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.in-app_img {
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .hero h2 {
+      font-size: 1.6rem;
+    }
+  .hero-about{
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  
+}
