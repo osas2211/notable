@@ -1,11 +1,18 @@
 import "@aws-amplify/ui-react/styles.css"
 import "./styles/global.css"
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { LandingPage } from "./pages/LandingPage"
+import { LogIn } from "./pages/LogIn"
 
 function App() {
   return (
     <div className="App">
-      <LandingPage />
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LogIn />} />
+        </Routes>
+      </Router>
     </div>
   )
 }

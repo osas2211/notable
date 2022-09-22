@@ -1,0 +1,47 @@
+.auth-form{
+  padding: 1.5rem;
+}
+.auth-form h2{
+  font-size: 2rem;
+  margin-bottom: 0;
+}
+
+.auth-form small{
+  font-size: 0.95rem;
+}
+
+.auth-form form{
+  margin: 2.5rem 0;
+}
+
+div.login-img {
+  width: 50%;
+  height: 100vh;
+}
+
+.login img{
+  width: 100%;
+  height: 100%;
+}
+
+.login .auth-form{
+  margin-left: 9rem;
+}
+
+
+@media (max-width: 900px) {
+  .login .auth-form {
+    margin-left: 3rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .login .auth-form {
+    margin-left: 0rem;
+    padding: 0 3rem;
+  }
+
+  .login-img {
+    display: none;
+  }
+}
