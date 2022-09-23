@@ -11,7 +11,11 @@ export const LogIn = () => {
         justifyContent="space-between"
         alignItems={"center"}
       >
-        <AuthForm />
+        <AuthForm
+          variant={"login"}
+          header={"Welcome back"}
+          subheader={"Jot down your ideas and thoughts within seconds"}
+        />
         <div className="login-img">
           <img src={loginImg} alt="Login Image" />
         </div>

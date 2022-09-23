@@ -30,7 +30,9 @@ export const LandingPage = () => {
               style={{ borderColor: "#0DA2E7", color: "#0DA2E7" }}
               margin={"0"}
             >
-              Sign up
+              <Link to={"/signup"} style={{ color: "#0DA2E7" }}>
+                Sign up
+              </Link>
             </Button>
           </ButtonGroup>
         </div>
@@ -46,7 +48,11 @@ export const LandingPage = () => {
           </small>
         </p>
         <p>
-          <Button variation="primary">Try Notelify for free</Button>
+          <Button variation="primary">
+            <Link to={"/signup"} style={{ color: "#fff" }}>
+              Try Notelify for free
+            </Link>
+          </Button>
         </p>
 
         <div>
@@ -86,7 +92,11 @@ export const LandingPage = () => {
         </p>
         <p style={{ marginTop: "0" }}>
           Developed by{" "}
-          <a href="https://osaretinfrank.me" target={"_blank"} style={{textDecoration: "underline", color: "#0DA2E7"}}>
+          <a
+            href="https://osaretinfrank.me"
+            target={"_blank"}
+            style={{ textDecoration: "underline", color: "#0DA2E7" }}
+          >
             Osariemen Osaretin Frank
           </a>
         </p>
