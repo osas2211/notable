@@ -48,7 +48,7 @@ export const LandingPage = () => {
           </small>
         </p>
         <p>
-          <Button variation="primary">
+          <Button variation="primary" marginTop={"1rem"}>
             <Link to={"/signup"} style={{ color: "#fff" }}>
               Try Notelify for free
             </Link>
@@ -88,7 +88,7 @@ export const LandingPage = () => {
         }}
       >
         <p style={{ marginBottom: "0" }}>
-          September 2022, Aws Amplify x Hashnode Hackathon
+          September 2022, AWS Amplify x Hashnode Hackathon
         </p>
         <p style={{ marginTop: "0" }}>
           Developed by{" "}
