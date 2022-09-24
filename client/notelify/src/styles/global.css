@@ -29,7 +29,9 @@ a{
 
 main{
   margin-left: 18%;
-  margin-top: 7rem;
+  margin-top: 2rem;
+  padding: 0 2rem 0 0;
+  padding-bottom: 2rem;
 }
 
 .container {
@@ -39,7 +41,7 @@ main{
 
 .hero{
   text-align: center;
-  margin: 5rem 0;
+  margin: 2.5rem 0;
 }
 
 .hero h2{
@@ -73,8 +75,16 @@ main{
 
 .in-app_img {
   width: 100%;
+  border-radius: inherit;
+  box-shadow: 2px 4px 16px rgba(37, 36, 36, 0.212);
 }
 
+.add-btn{
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  z-index: 10;
+}
 
 @media (max-width: 700px) {
   .hero h2 {

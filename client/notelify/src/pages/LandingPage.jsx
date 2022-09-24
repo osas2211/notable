@@ -1,11 +1,11 @@
 import React from "react"
-import { Button, ButtonGroup } from "@aws-amplify/ui-react"
+import { Button, ButtonGroup, View } from "@aws-amplify/ui-react"
 import { Link } from "react-router-dom"
 import Notelifylogo3 from "../ui-components/Notelifylogo3"
 import Collaborate from "../ui-components/Collaborate"
 import EasyToUse from "../ui-components/EasyToUse"
 import AwsPowered from "../ui-components/AwsPowered"
-import inApp from "../images/inApp.png"
+import inApp from "../images/inApp2.jpg"
 import amplify from "../images/amplify.svg"
 
 export const LandingPage = () => {
@@ -55,9 +55,14 @@ export const LandingPage = () => {
           </Button>
         </p>
 
-        <div>
+        <View
+          as="div"
+          marginTop="2.5rem"
+          boxShadow="medium"
+          borderRadius="large"
+        >
           <img src={inApp} className="in-app_img" alt="In app View" />
-        </div>
+        </View>
         <div style={{ textAlign: "center", padding: "3rem 0" }}>
           <h2>Everything your creativity needs</h2>
         </div>

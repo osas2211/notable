@@ -1,0 +1,27 @@
+.quicknotes{
+  background-color: #fff;
+  border-radius: 5px;
+  margin-top: -7rem;
+}
+
+.quicknotes h2{
+  font-weight: 500;
+  
+}
+
+.quicknote{
+  position: relative;
+}
+.quicknote-icon{
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.3rem;
+  transform: scale(0.8);
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .quicknotes{
+    margin-top: 1rem;
+  }
+}

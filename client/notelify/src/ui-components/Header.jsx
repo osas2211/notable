@@ -2,7 +2,7 @@ import { Button } from "@aws-amplify/ui-react"
 import React, { useState } from "react"
 import Notelifylogo3 from "./Notelifylogo3"
 import { Link, useHref } from "react-router-dom"
-import { View, Icon, Flex, SearchField } from "@aws-amplify/ui-react"
+import { View, Icon, Flex, SearchField, Text } from "@aws-amplify/ui-react"
 import StickyNote2Icon from "@mui/icons-material/StickyNote2"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
@@ -10,6 +10,7 @@ import ArchiveIcon from "@mui/icons-material/Archive"
 import DarkModeIcon from "@mui/icons-material/DarkMode"
 import SettingsIcon from "@mui/icons-material/Settings"
 import dp from "../images/dp.jpg"
+import showcase from "../images/showcase.jpg"
 import "../styles/header.css"
 
 export const Header = () => {
@@ -17,37 +18,53 @@ export const Header = () => {
   const href = useHref()
   return (
     <div>
-      <div
+      <Button
+        variation="primary"
+        size="small"
+        className="add-btn"
+        boxShadow={"large"}
+      >
+        {" "}
+        + Add New Note
+      </Button>
+
+      {/* Nav Section */}
+      <View
+        as="div"
+        boxShadow="medium"
         className={`${mobileNav ? "main-header nav-active" : "main-header"}`}
       >
         <View as="div" marginLeft={"1.5rem"}>
-          <Notelifylogo3 marginLeft={"1rem"} marginBottom={"2.5rem"} />
-          <Button variation="primary" size="small">
-            {" "}
-            + Add New Note
-          </Button>
+          <Notelifylogo3 marginBottom={"2.5rem"} />
+          <View as="div" margin="1rem 0 1rem -1rem" width="100%">
+            <SearchField
+              placeholder="Search notes"
+              boxShadow={"medium"}
+              size="small"
+            />
+          </View>
         </View>
 
         <View as={"nav"} marginTop="2.5rem">
           <ul>
             <li className={href === "/notes" && "active-nav"}>
               <Link to="/notes">
-                <Icon as={StickyNote2Icon} color="#051922" /> All Notes
+                <Icon as={StickyNote2Icon} color="#A09ABC" /> All Notes
               </Link>
             </li>
             <li className={href === "/favourites" && "active-nav"}>
               <Link to="/favourites">
-                <Icon as={FavoriteBorderIcon} color="#051922" /> Favourites
+                <Icon as={FavoriteBorderIcon} color="#EF2D56" /> Favourites
               </Link>
             </li>
             <li className={href === "/notefication" && "active-nav"}>
               <Link to="/notifications">
-                <Icon as={NotificationsNoneIcon} color="#051922" /> Notifcations
+                <Icon as={NotificationsNoneIcon} color="#2FBF71" /> Notifcations
               </Link>
             </li>
             <li className={href === "/archive" && "active-nav"}>
               <Link to="/archive">
-                <Icon as={ArchiveIcon} color="#051922" /> Archive
+                <Icon as={ArchiveIcon} color="#BABD8D" /> Archive
               </Link>
             </li>
             <li>
@@ -55,26 +72,41 @@ export const Header = () => {
             </li>
           </ul>
         </View>
-      </div>
-      <div className="user-icon">
-        <Flex justifyContent={"space-between"} alignItems="center">
-          <SearchField
-            placeholder="Search notes"
-            boxShadow={"medium"}
-            size="small"
-          />
+      </View>
 
-          <Flex alignItems="center">
-            <Link
-              to={"/settings"}
-              style={{ marginRight: "1rem", display: "inline-block" }}
-            >
-              <Icon as={SettingsIcon} color="#051922" />
-            </Link>
+      {/* Showcase Section */}
+      <div className="top-header">
+        <div className="showcase">
+          <img src={showcase} alt="showcase" />
+        </div>
+        <Flex
+          justifyContent={"space-between"}
+          alignItems="center"
+          marginTop={"2rem"}
+        >
+          <Text color={"#fff"}>
+            <h2>Good Morning, John.</h2>
+            <p>
+              <small>Friday, September 23, 2022</small>
+            </p>
+          </Text>
+          <Link
+            to={"/profile"}
+            style={{
+              marginRight: "1rem",
+              display: "inline-block",
+              color: "#fff",
+            }}
+            className="user-icon"
+          >
             <Flex
               justifyContent={"space-between"}
               gap="5px"
               alignItems="center"
+              backgroundColor={"#565857"}
+              padding="0.2rem 0.5rem"
+              borderRadius={"large"}
+              boxShadow={"large"}
             >
               <img
                 src={dp}
@@ -89,7 +121,7 @@ export const Header = () => {
               />
               <span>John Doe</span>
             </Flex>
-          </Flex>
+          </Link>
         </Flex>
       </div>
 
