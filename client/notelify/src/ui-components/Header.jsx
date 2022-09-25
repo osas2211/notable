@@ -8,7 +8,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
 import ArchiveIcon from "@mui/icons-material/Archive"
 import DarkModeIcon from "@mui/icons-material/DarkMode"
-import SettingsIcon from "@mui/icons-material/Settings"
 import dp from "../images/dp.jpg"
 import showcase from "../images/showcase.jpg"
 import "../styles/header.css"
@@ -57,7 +56,7 @@ export const Header = () => {
                 <Icon as={FavoriteBorderIcon} color="#EF2D56" /> Favourites
               </Link>
             </li>
-            <li className={href === "/notefication" && "active-nav"}>
+            <li className={href === "/notifications" && "active-nav"}>
               <Link to="/notifications">
                 <Icon as={NotificationsNoneIcon} color="#2FBF71" /> Notifcations
               </Link>

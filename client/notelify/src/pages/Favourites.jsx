@@ -1,5 +1,20 @@
 import React from "react"
+import { View, Heading, Grid } from "@aws-amplify/ui-react"
+import { NoteOverview } from "../ui-components/NoteOverview"
 
 export const Favourites = () => {
-  return <div>Favourites</div>
+  const arr = [0, 1, 2, 3, 4, 6]
+  return (
+    <View as="div">
+      <Heading level={5} margin="2rem 0 1rem 0" fontWeight={"medium"}>
+        Favourites
+      </Heading>
+      <Grid templateColumns={{ base: "1fr", large: "1fr 1fr 1fr" }} gap="1rem">
+        {arr.map((data) => (
+          // render if isFavourite
+          <NoteOverview isFavourite={true} />
+        ))}
+      </Grid>
+    </View>
+  )
 }

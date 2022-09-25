@@ -7,6 +7,8 @@ import { SignUp } from "./pages/SignUp"
 import { PrivateRoutes } from "./pages/PrivateRoutes"
 import { Notes } from "./pages/Notes"
 import { Favourites } from "./pages/Favourites"
+import { Notifications } from "./pages/Notifications"
+import { Archive } from "./pages/Archive"
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/" element={<PrivateRoutes />}>
             <Route path="/notes" element={<Notes />} />
             <Route path="/favourites" element={<Favourites />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/archive" element={<Archive />} />
           </Route>
           <Route path="*" element={<p>Page Not Found</p>} />
         </Routes>
