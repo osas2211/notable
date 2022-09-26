@@ -4,7 +4,16 @@ import Notelifylogo3 from "./Notelifylogo3"
 import { TextField, Flex, CheckboxField, Button } from "@aws-amplify/ui-react"
 import { Link } from "react-router-dom"
 
-export const AuthForm = ({ header, subheader, variant }) => {
+export const AuthForm = ({
+  header,
+  subheader,
+  variant,
+  userNameLogin,
+  setUserNameLogin,
+  passwordLogin,
+  setPasswordLogin,
+  submitLogin,
+}) => {
   return (
     <div className="auth-form">
       <div style={{ margin: "2.5rem 0" }}>
@@ -21,20 +30,24 @@ export const AuthForm = ({ header, subheader, variant }) => {
 
       {/* Login Form */}
       {variant === "login" && (
-        <form>
+        <form onSubmit={submitLogin}>
           <Flex direction={"column"}>
             <TextField
-              placeholder="example@notelify.com"
-              label="Email"
-              type={"email"}
+              placeholder="JohnDoe5796"
+              label="Username"
+              type={"text"}
               boxShadow={"medium"}
               marginBottom="0.8rem"
+              value={userNameLogin}
+              onChange={(e) => setUserNameLogin(e.target.value)}
               required
             />
             <TextField
               label="password"
               type={"password"}
               boxShadow={"medium"}
+              value={passwordLogin}
+              onChange={(e) => setPasswordLogin(e.target.value)}
               required
             />
           </Flex>

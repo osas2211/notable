@@ -1,5 +1,6 @@
 import "@aws-amplify/ui-react/styles.css"
 import "./styles/global.css"
+import "react-toastify/dist/ReactToastify.css"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { LandingPage } from "./pages/LandingPage"
 import { LogIn } from "./pages/LogIn"
@@ -10,10 +11,12 @@ import { Favourites } from "./pages/Favourites"
 import { Notifications } from "./pages/Notifications"
 import { Archive } from "./pages/Archive"
 import { Editor } from "./pages/Editor"
+import { store } from "./redux/store"
+import { Provider } from "react-redux"
 
 function App() {
   return (
-    <div className="App">
+    <Provider store={store}>
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -29,7 +32,7 @@ function App() {
           <Route path="*" element={<p>Page Not Found</p>} />
         </Routes>
       </Router>
-    </div>
+    </Provider>
   )
 }
 
