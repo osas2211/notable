@@ -1,36 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
-body{
+body {
   font-family: "Quicksand", Arial, Helvetica, sans-serif;
   position: relative;
 }
 /* Override only primary variation styles */
-.amplify-button[data-variation='primary'] {
-  background-color: #0DA2E7;
+.amplify-button[data-variation="primary"] {
+  background-color: #0da2e7;
   color: white;
 }
-.amplify-icon{
+.amplify-icon {
   cursor: pointer;
 }
-ul{
+ul {
   list-style: none;
   padding: 0;
 }
-li{
+li {
   padding: 0;
   margin: 0;
 }
-a{
+a {
   color: #000;
   text-decoration: none;
 }
 
-main{
+main {
   margin-left: 18%;
   margin-top: 2rem;
   padding: 0 2rem 0 0;
@@ -42,26 +42,26 @@ main{
   margin: auto;
 }
 
-.hero{
+.hero {
   text-align: center;
   margin: 2.5rem 0;
 }
 
-.hero h2{
+.hero h2 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
   font-weight: 500;
 }
 
-.hero small{
+.hero small {
   opacity: 0.7;
   font-size: 0.9rem;
 }
 
-.hero .vector{
+.hero .vector {
   position: relative;
 }
-.hero .vector::after{
+.hero .vector::after {
   content: url("../images/Vector.png");
   position: absolute;
   bottom: -1.8rem;
@@ -69,7 +69,7 @@ main{
   transform: scale(0.7);
 }
 
-.hero-about{
+.hero-about {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -82,7 +82,7 @@ main{
   box-shadow: 2px 4px 16px rgba(37, 36, 36, 0.212);
 }
 
-.add-btn{
+.add-btn {
   position: fixed;
   bottom: 3rem;
   right: 3rem;
@@ -91,9 +91,9 @@ main{
 
 @media (max-width: 700px) {
   .hero h2 {
-      font-size: 1.6rem;
-    }
-  .hero-about{
+    font-size: 1.6rem;
+  }
+  .hero-about {
     flex-direction: column;
     align-items: center;
     flex-wrap: wrap;
