@@ -10,7 +10,7 @@ const auth = require("./middlewares/auth")
 const app = express()
 const redisClient = require("./redis/client")
 
-redisClient
+// redisClient
 
 // essential middlewares
 app.use(cors())

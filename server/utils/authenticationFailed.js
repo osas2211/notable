@@ -1,6 +1,6 @@
 module.exports = authenticationFailed = (response, message) => {
-  return response.status(401).json({
+  return response.status(401).send({
     authenticated: false,
-    message: `User authentication has failed: ${message}`,
+    message: `User authentication failed: ${message}`,
   })
 }
