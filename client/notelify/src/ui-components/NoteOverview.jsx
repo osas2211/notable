@@ -16,7 +16,7 @@ export const NoteOverview = ({
   id,
 }) => {
   return (
-    <Link to={`${id}`} className="note">
+    <Link to={`/notes/editor/${id}`} className="note">
       <Card padding={"1rem"} boxShadow="medium">
         <Flex justifyContent={"space-between"} alignItems="center">
           <Heading level={6} fontWeight={"medium"}>

@@ -14,6 +14,9 @@ body{
   background-color: #0DA2E7;
   color: white;
 }
+.amplify-icon{
+  cursor: pointer;
+}
 ul{
   list-style: none;
   padding: 0;

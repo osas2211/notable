@@ -14,6 +14,8 @@ export const PrivateRoutes = () => {
           <></>
         ) : href == "/archive" ? (
           <></>
+        ) : href.indexOf(`notes/editor/`) !== -1 ? (
+          <></>
         ) : (
           <QuickNotes />
         )}

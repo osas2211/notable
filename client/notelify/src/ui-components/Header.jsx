@@ -1,7 +1,7 @@
 import { Button } from "@aws-amplify/ui-react"
 import React, { useState } from "react"
 import Notelifylogo3 from "./Notelifylogo3"
-import { Link, useHref } from "react-router-dom"
+import { Link, useHref, useParams } from "react-router-dom"
 import { View, Icon, Flex, SearchField, Text } from "@aws-amplify/ui-react"
 import StickyNote2Icon from "@mui/icons-material/StickyNote2"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
@@ -17,15 +17,17 @@ export const Header = () => {
   const href = useHref()
   return (
     <div>
-      <Button
-        variation="primary"
-        size="small"
-        className="add-btn"
-        boxShadow={"large"}
-      >
-        {" "}
-        + Add New Note
-      </Button>
+      {href.indexOf(`notes/editor/`) == -1 && (
+        <Button
+          variation="primary"
+          size="small"
+          className="add-btn"
+          boxShadow={"large"}
+        >
+          {" "}
+          + Add New Note
+        </Button>
+      )}
 
       {/* Nav Section */}
       <View
@@ -34,7 +36,9 @@ export const Header = () => {
         className={`${mobileNav ? "main-header nav-active" : "main-header"}`}
       >
         <View as="div" marginLeft={"1.5rem"}>
-          <Notelifylogo3 marginBottom={"2.5rem"} />
+          <Link to={"/"}>
+            <Notelifylogo3 marginBottom={"2.5rem"} />
+          </Link>
           <View as="div" margin="1rem 0 1rem -1rem" width="100%">
             <SearchField
               placeholder="Search notes"
@@ -74,55 +78,57 @@ export const Header = () => {
       </View>
 
       {/* Showcase Section */}
-      <div className="top-header">
-        <div className="showcase">
-          <img src={showcase} alt="showcase" />
-        </div>
-        <Flex
-          justifyContent={"space-between"}
-          alignItems="center"
-          marginTop={"2rem"}
-        >
-          <Text color={"#fff"}>
-            <h2>Good Morning, John.</h2>
-            <p>
-              <small>Friday, September 23, 2022</small>
-            </p>
-          </Text>
-          <Link
-            to={"/profile"}
-            style={{
-              marginRight: "1rem",
-              display: "inline-block",
-              color: "#fff",
-            }}
-            className="user-icon"
+      {href.indexOf(`notes/editor/`) == -1 && (
+        <div className="top-header">
+          <div className="showcase">
+            <img src={showcase} alt="showcase" />
+          </div>
+          <Flex
+            justifyContent={"space-between"}
+            alignItems="center"
+            marginTop={"2rem"}
           >
-            <Flex
-              justifyContent={"space-between"}
-              gap="5px"
-              alignItems="center"
-              backgroundColor={"#565857"}
-              padding="0.2rem 0.5rem"
-              borderRadius={"large"}
-              boxShadow={"large"}
+            <Text color={"#fff"}>
+              <h2>Good Morning, John.</h2>
+              <p>
+                <small>Friday, September 23, 2022</small>
+              </p>
+            </Text>
+            <Link
+              to={"/profile"}
+              style={{
+                marginRight: "1rem",
+                display: "inline-block",
+                color: "#fff",
+              }}
+              className="user-icon"
             >
-              <img
-                src={dp}
-                alt="User Image"
-                style={{
-                  height: "2rem",
-                  width: "2rem",
-                  borderRadius: "100%",
-                  display: "inline-block",
-                  margin: "0",
-                }}
-              />
-              <span>John Doe</span>
-            </Flex>
-          </Link>
-        </Flex>
-      </div>
+              <Flex
+                justifyContent={"space-between"}
+                gap="5px"
+                alignItems="center"
+                backgroundColor={"#565857"}
+                padding="0.2rem 0.5rem"
+                borderRadius={"large"}
+                boxShadow={"large"}
+              >
+                <img
+                  src={dp}
+                  alt="User Image"
+                  style={{
+                    height: "2rem",
+                    width: "2rem",
+                    borderRadius: "100%",
+                    display: "inline-block",
+                    margin: "0",
+                  }}
+                />
+                <span>John Doe</span>
+              </Flex>
+            </Link>
+          </Flex>
+        </div>
+      )}
 
       <View className="header-mobile" boxShadow="small">
         <Flex justifyContent={"space-between"} alignItems="center">

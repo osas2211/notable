@@ -9,6 +9,7 @@ import { Notes } from "./pages/Notes"
 import { Favourites } from "./pages/Favourites"
 import { Notifications } from "./pages/Notifications"
 import { Archive } from "./pages/Archive"
+import { Editor } from "./pages/Editor"
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/" element={<PrivateRoutes />}>
             <Route path="/notes" element={<Notes />} />
+            <Route path="/notes/editor/:id" element={<Editor />} />
             <Route path="/favourites" element={<Favourites />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/archive" element={<Archive />} />
