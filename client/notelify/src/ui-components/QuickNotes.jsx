@@ -104,6 +104,7 @@ export const QuickNotes = () => {
                 borderRadius="8px"
                 boxShadow={"medium"}
                 className="quicknote"
+                key={quicknote._id}
               >
                 <Icon
                   as={DeleteIcon}

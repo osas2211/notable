@@ -18,7 +18,7 @@ export const Header = () => {
   const href = useHref()
   return (
     <div>
-      {href.indexOf(`notes/editor/`) == -1 && (
+      {/* {href.indexOf(`notes/editor/`) == -1 && (
         <Button
           variation="primary"
           size="small"
@@ -28,7 +28,7 @@ export const Header = () => {
           {" "}
           + Add New Note
         </Button>
-      )}
+      )} */}
 
       {/* Nav Section */}
       <View

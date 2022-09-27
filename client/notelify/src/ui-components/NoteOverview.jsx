@@ -6,6 +6,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import ArchiveIcon from "@mui/icons-material/Archive"
 import DeleteIcon from "@mui/icons-material/Delete"
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt"
+import { useUpdateNoteMutation } from "../redux/services/user"
 
 export const NoteOverview = ({
   title,
@@ -14,10 +15,13 @@ export const NoteOverview = ({
   isFavourite,
   isArchived,
   id,
+  refetchNote,
 }) => {
+  const [updateNote, { data }] = useUpdateNoteMutation()
+  const token = localStorage.getItem("token")
   return (
-    <Link to={`/notes/editor/${id}`} className="note">
-      <Card padding={"1rem"} boxShadow="medium">
+    <Card padding={"1rem"} boxShadow="medium">
+      <Link to={`/notes/editor/${id}`} className="note">
         <Flex justifyContent={"space-between"} alignItems="center">
           <Heading level={6} fontWeight={"medium"}>
             {title}
@@ -35,46 +39,73 @@ export const NoteOverview = ({
           </Text>
         </View>
         <Text as="p" fontSize={"0.85rem"}>
-          {body?.slice(0, 20)}....
+          {body?.slice(0, 120)}....
         </Text>
+      </Link>
 
-        <View as="div" marginTop="1.5rem" className="note-icons">
-          <Flex justifyContent={"space-between"} alignItems={"center"}>
-            <div>
-              <Icon
-                as={FavoriteBorderIcon}
-                fontSize="1.2rem"
-                opacity={"0.7"}
-                style={{ cursor: "pointer" }}
-                color={isFavourite && "#EF2D56"}
-              />
-              <Icon
-                as={PersonAddAltIcon}
-                fontSize="1.2rem"
-                opacity={"0.7"}
-                marginLeft="1rem"
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-            <div>
-              <Icon
-                as={ArchiveIcon}
-                fontSize="1.2rem"
-                opacity={"0.7"}
-                marginLeft="1rem"
-                style={{ cursor: "pointer" }}
-              />
-              <Icon
-                as={DeleteIcon}
-                fontSize="1.2rem"
-                opacity={"0.7"}
-                marginLeft="1rem"
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-          </Flex>
-        </View>
-      </Card>
-    </Link>
+      <View as="div" marginTop="1.5rem" className="note-icons">
+        <Flex justifyContent={"space-between"} alignItems={"center"}>
+          <div>
+            <Icon
+              as={FavoriteBorderIcon}
+              fontSize="1.2rem"
+              opacity={"0.7"}
+              style={{ cursor: "pointer" }}
+              color={isFavourite === true ? "#EF2D56" : "#000"}
+              onClick={async () => {
+                try {
+                  if (isFavourite === true) {
+                    await updateNote({ favourite: false, token, id })
+                  } else {
+                    await updateNote({ favourite: true, token, id })
+                  }
+                  refetchNote()
+                } catch (error) {
+                  console.log(error)
+                }
+              }}
+            />
+            <Icon
+              as={PersonAddAltIcon}
+              fontSize="1.2rem"
+              opacity={"0.7"}
+              marginLeft="1rem"
+              style={{ cursor: "pointer" }}
+            />
+          </div>
+          <div>
+            <Icon
+              as={ArchiveIcon}
+              fontSize="1.2rem"
+              opacity={"0.7"}
+              marginLeft="1rem"
+              style={{ cursor: "pointer" }}
+              onClick={async () => {
+                console.log(data)
+                try {
+                  if (isArchived === false) {
+                    await updateNote({ archive: true, token, id })
+                    console.log(data)
+                  } else {
+                    await updateNote({ archive: false, token, id })
+                    console.log(data)
+                  }
+                  refetchNote()
+                } catch (error) {
+                  console.log(error)
+                }
+              }}
+            />
+            <Icon
+              as={DeleteIcon}
+              fontSize="1.2rem"
+              opacity={"0.7"}
+              marginLeft="1rem"
+              style={{ cursor: "pointer" }}
+            />
+          </div>
+        </Flex>
+      </View>
+    </Card>
   )
 }
