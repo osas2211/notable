@@ -20,7 +20,7 @@ export const NoteOverview = ({
       <Card padding={"1rem"} boxShadow="medium">
         <Flex justifyContent={"space-between"} alignItems="center">
           <Heading level={6} fontWeight={"medium"}>
-            Deployment of site
+            {title}
           </Heading>
           <Icon
             as={EditIcon}
@@ -35,8 +35,7 @@ export const NoteOverview = ({
           </Text>
         </View>
         <Text as="p" fontSize={"0.85rem"}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
-          officiis nisi fuga voluptatibus dicta ab beatae rerum voluptas....
+          {body?.slice(0, 20)}....
         </Text>
 
         <View as="div" marginTop="1.5rem" className="note-icons">

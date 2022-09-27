@@ -13,6 +13,7 @@ export const AuthForm = ({
   passwordLogin,
   setPasswordLogin,
   submitLogin,
+  isLoading,
 }) => {
   return (
     <div className="auth-form">
@@ -70,8 +71,9 @@ export const AuthForm = ({
             variation="primary"
             width={"100%"}
             margin="2.3rem 0 0.8rem 0"
+            disabled={isLoading ? true : false}
           >
-            Sign In
+            {isLoading ? "Signing in..." : "Sign In"}
           </Button>
           <p style={{ textAlign: "center" }}>
             Don't have an account?

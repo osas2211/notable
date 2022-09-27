@@ -1,5 +1,5 @@
 import { Flex } from "@aws-amplify/ui-react"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { AuthForm } from "../ui-components/AuthForm"
 import loginImg from "../images/signin.png"
 import { useLoginMutation } from "../redux/services/auth"
@@ -10,28 +10,20 @@ export const LogIn = () => {
   const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
-  const [login, { data, isError, isLoading, isSuccess, error }] =
-    useLoginMutation()
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Log in successful!", {
-        position: toast.POSITION.TOP_CENTER,
-      })
-      window.localStorage.setItem("token", JSON.stringify(data.user.token))
-      setTimeout(() => {
-        navigate("/notes")
-      }, 2000)
-    }
-    if (isError) {
+  const [login, { data, isLoading }] = useLoginMutation()
+
+  const onLogin = async (e) => {
+    e.preventDefault()
+    try {
+      await login({ userName, password }).unwrap()
+      console.log(data)
+      navigate("/notes")
+    } catch (error) {
       console.log(error)
       toast.error(error.data.message, {
         position: toast.POSITION.TOP_CENTER,
       })
     }
-  }, [isSuccess, isError])
-  const onLogin = (e) => {
-    e.preventDefault()
-    login({ userName, password })
   }
   return (
     <div className="login">
@@ -50,9 +42,10 @@ export const LogIn = () => {
           passwordLogin={password}
           setPasswordLogin={setPassword}
           submitLogin={onLogin}
+          isLoading={isLoading}
         />
         <div className="login-img">
-          <img src={loginImg} alt="Login Image" />
+          <img src={loginImg} alt="Login" />
         </div>
       </Flex>
     </div>

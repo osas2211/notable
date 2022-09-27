@@ -11,6 +11,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode"
 import dp from "../images/dp.jpg"
 import showcase from "../images/showcase.jpg"
 import "../styles/header.css"
+import { Logout } from "./Logout"
 
 export const Header = () => {
   const [mobileNav, setMobileNav] = useState(false)
@@ -71,7 +72,8 @@ export const Header = () => {
               </Link>
             </li>
             <li>
-              <Icon as={DarkModeIcon} color="#051922" /> Dark Mode
+              {/* <Icon as={DarkModeIcon} color="#051922" /> Dark Mode */}
+              <Logout />
             </li>
           </ul>
         </View>
@@ -94,7 +96,7 @@ export const Header = () => {
                 <small>Friday, September 23, 2022</small>
               </p>
             </Text>
-            <Link
+            {/* <Link
               to={"/profile"}
               style={{
                 marginRight: "1rem",
@@ -102,6 +104,15 @@ export const Header = () => {
                 color: "#fff",
               }}
               className="user-icon"
+            ></Link> */}
+            <View
+              className="user-icon"
+              style={{
+                marginRight: "1rem",
+                display: "inline-block",
+                color: "#fff",
+              }}
+              cursor="pointer"
             >
               <Flex
                 justifyContent={"space-between"}
@@ -114,7 +125,7 @@ export const Header = () => {
               >
                 <img
                   src={dp}
-                  alt="User Image"
+                  alt="User Avatar"
                   style={{
                     height: "2rem",
                     width: "2rem",
@@ -125,7 +136,7 @@ export const Header = () => {
                 />
                 <span>John Doe</span>
               </Flex>
-            </Link>
+            </View>
           </Flex>
         </div>
       )}
