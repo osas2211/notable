@@ -13,7 +13,17 @@ export const AuthForm = ({
   passwordLogin,
   setPasswordLogin,
   submitLogin,
-  isLoading,
+  isLoadingLogin,
+  nameRegister,
+  setNameRegister,
+  email,
+  setEmail,
+  userNameRegister,
+  setUserNameRegister,
+  passwordRegister,
+  setPasswordRegister,
+  submitRegister,
+  isLoadingRegister,
 }) => {
   return (
     <div className="auth-form">
@@ -71,9 +81,9 @@ export const AuthForm = ({
             variation="primary"
             width={"100%"}
             margin="2.3rem 0 0.8rem 0"
-            disabled={isLoading ? true : false}
+            disabled={isLoadingLogin ? true : false}
           >
-            {isLoading ? "Signing in..." : "Sign In"}
+            {isLoadingLogin ? "Signing in..." : "Sign In"}
           </Button>
           <p style={{ textAlign: "center" }}>
             Don't have an account?
@@ -92,7 +102,7 @@ export const AuthForm = ({
       )}
       {/* Sign Up */}
       {variant === "signup" && (
-        <form>
+        <form onSubmit={submitRegister}>
           <Flex
             direction={"column"}
             justifyContent="space-between"
@@ -104,6 +114,8 @@ export const AuthForm = ({
               type={"text"}
               boxShadow="medium"
               marginBottom="0.8rem"
+              value={nameRegister}
+              onChange={(e) => setNameRegister(e.target.value)}
             />
             <TextField
               placeholder="example@notelify.com"
@@ -112,6 +124,8 @@ export const AuthForm = ({
               boxShadow={"medium"}
               marginBottom="0.8rem"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               placeholder="John247"
@@ -119,12 +133,16 @@ export const AuthForm = ({
               type={"text"}
               boxShadow="medium"
               marginBottom="0.8rem"
+              value={userNameRegister}
+              onChange={(e) => setUserNameRegister(e.target.value)}
             />
             <TextField
               label="password"
               type={"password"}
               boxShadow={"medium"}
               required
+              value={passwordRegister}
+              onChange={(e) => setPasswordRegister(e.target.value)}
             />
           </Flex>
           <Button
@@ -132,8 +150,9 @@ export const AuthForm = ({
             variation="primary"
             width={"100%"}
             margin="2.3rem 0 0.8rem 0"
+            disabled={isLoadingLogin ? true : false}
           >
-            Sign Up
+            {isLoadingLogin ? "Signing up..." : "Sign Up"}
           </Button>
           <p style={{ textAlign: "center" }}>
             Already have an account?
