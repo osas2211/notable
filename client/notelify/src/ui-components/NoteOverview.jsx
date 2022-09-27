@@ -5,13 +5,13 @@ import EditIcon from "@mui/icons-material/Edit"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import ArchiveIcon from "@mui/icons-material/Archive"
 import DeleteIcon from "@mui/icons-material/Delete"
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt"
 import { UnarchiveTwoTone } from "@mui/icons-material"
 import {
   useUpdateNoteMutation,
   useDeleteNoteMutation,
 } from "../redux/services/user"
 import { ToastContainer, toast } from "react-toastify"
+import { InviteCollaborator } from "./InviteCollaborator"
 
 export const NoteOverview = ({
   title,
@@ -20,9 +20,10 @@ export const NoteOverview = ({
   isFavourite,
   isArchived,
   id,
+  collaborators,
   refetchNote,
 }) => {
-  const [updateNote, { data }] = useUpdateNoteMutation()
+  const [updateNote] = useUpdateNoteMutation()
   const [deleteNote] = useDeleteNoteMutation()
   const token = localStorage.getItem("token")
   const dateObj = new Date(time)
@@ -85,13 +86,7 @@ export const NoteOverview = ({
                 }
               }}
             />
-            <Icon
-              as={PersonAddAltIcon}
-              fontSize="1.2rem"
-              opacity={"0.7"}
-              marginLeft="1rem"
-              style={{ cursor: "pointer" }}
-            />
+            <InviteCollaborator noteID={id} collaborators={collaborators} />
           </div>
           <div>
             <Icon

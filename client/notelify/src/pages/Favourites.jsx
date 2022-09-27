@@ -26,6 +26,7 @@ export const Favourites = () => {
                   isArchived={note.archive}
                   refetchNote={refetch}
                   time={note.last_edited}
+                  collaborators={note.collaborators}
                 />
               )
           )}

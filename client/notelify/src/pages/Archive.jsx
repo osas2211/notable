@@ -25,6 +25,7 @@ export const Archive = () => {
                   isArchived={note.archive}
                   refetchNote={refetch}
                   time={note.last_edited}
+                  collaborators={note.collaborators}
                 />
               )
           )}

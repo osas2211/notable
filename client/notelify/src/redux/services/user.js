@@ -9,6 +9,19 @@ export const userApi = createApi({
   }),
   tagTypes: ["Note, User, Quicknote"],
   endpoints: (builder) => ({
+    //User Endpoints
+    getUsers: builder.mutation({
+      query: (args) => {
+        return {
+          url: "user",
+          method: "POST",
+          headers: {
+            authorization: `Bearer ${args.token}`,
+          },
+          body: args.users,
+        }
+      },
+    }),
     // Notes Endpoints
     getNotes: builder.query({
       query: (token) => {
@@ -58,6 +71,23 @@ export const userApi = createApi({
       },
     }),
 
+    // Collaboration Endpoints
+    inviteCollaborator: builder.mutation({
+      query(args) {
+        return {
+          url: `notes/invite`,
+          method: "POST",
+          headers: {
+            authorization: `Bearer ${args.token}`,
+          },
+          body: {
+            noteID: args.noteID,
+            userName: args.userName,
+          },
+        }
+      },
+    }),
+
     // Quicknotes Endpoints
     getQuicknotes: builder.query({
       query: (token) => {
@@ -98,10 +128,12 @@ export const userApi = createApi({
 })
 
 export const {
+  useGetUsersMutation,
   useGetNotesQuery,
   useAddNoteMutation,
   useUpdateNoteMutation,
   useDeleteNoteMutation,
+  useInviteCollaboratorMutation,
   useGetQuicknotesQuery,
   useAddQuicknoteMutation,
   useDeleteQuicknoteMutation,

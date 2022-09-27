@@ -103,6 +103,7 @@ export const Notes = () => {
                   refetchNote={refetch}
                   isArchived={note.archive}
                   time={note.last_edited}
+                  collaborators={note.collaborators}
                 />
               )
           )}

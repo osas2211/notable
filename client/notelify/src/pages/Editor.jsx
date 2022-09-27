@@ -4,6 +4,7 @@ import { Heading, View, Text, Icon, Flex } from "@aws-amplify/ui-react"
 import { Download, Save, Edit } from "@mui/icons-material"
 import PersonAddAlt from "@mui/icons-material/PersonAddAlt"
 import { useParams } from "react-router-dom"
+import { InviteCollaborator } from "../ui-components/InviteCollaborator"
 
 export const Editor = () => {
   const initialValue = [
@@ -25,9 +26,14 @@ export const Editor = () => {
           <Icon as={Edit} color={"#6B818C"} />
         </Flex>
         <View>
-          <Icon as={PersonAddAlt} marginRight="1rem" color={"#6B818C"} />
-          <Icon as={Save} marginRight="1rem" color={"#6B818C"} />
-          <Icon as={Download} color={"#6B818C"} />
+          <InviteCollaborator fontSize="1.5rem" />
+          <Icon as={Save} fontSize="1.5rem" opacity={"0.7"} marginLeft="1rem" />
+          <Icon
+            as={Download}
+            fontSize="1.5rem"
+            opacity={"0.7"}
+            marginLeft="1rem"
+          />
         </View>
       </Flex>
       <RichTextEditor initialValue={text} setText={setText} />
