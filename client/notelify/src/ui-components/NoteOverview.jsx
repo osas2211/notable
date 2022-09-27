@@ -19,6 +19,19 @@ export const NoteOverview = ({
 }) => {
   const [updateNote, { data }] = useUpdateNoteMutation()
   const token = localStorage.getItem("token")
+  const dateObj = new Date(time)
+  const date = dateObj.toLocaleDateString("en-us", {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  })
+  const time_ = dateObj.toLocaleTimeString("en-us", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  })
+
   return (
     <Card padding={"1rem"} boxShadow="medium">
       <Link to={`/notes/editor/${id}`} className="note">
@@ -35,7 +48,7 @@ export const NoteOverview = ({
         </Flex>
         <View as="div" marginBottom="0.5rem" marginTop="0.2rem">
           <Text as="small" fontSize={"0.8rem"} opacity={"0.7"}>
-            21 Thurs, 2022, 9:15am
+            {`${date}, ${time_}`}
           </Text>
         </View>
         <Text as="p" fontSize={"0.85rem"}>
@@ -81,14 +94,11 @@ export const NoteOverview = ({
               marginLeft="1rem"
               style={{ cursor: "pointer" }}
               onClick={async () => {
-                console.log(data)
                 try {
                   if (isArchived === false) {
                     await updateNote({ archive: true, token, id })
-                    console.log(data)
                   } else {
                     await updateNote({ archive: false, token, id })
-                    console.log(data)
                   }
                   refetchNote()
                 } catch (error) {

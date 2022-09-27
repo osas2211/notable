@@ -1,13 +1,11 @@
-import { Button } from "@aws-amplify/ui-react"
 import React, { useState } from "react"
 import Notelifylogo3 from "./Notelifylogo3"
-import { Link, useHref, useParams } from "react-router-dom"
+import { Link, useHref } from "react-router-dom"
 import { View, Icon, Flex, SearchField, Text } from "@aws-amplify/ui-react"
 import StickyNote2Icon from "@mui/icons-material/StickyNote2"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
 import ArchiveIcon from "@mui/icons-material/Archive"
-import DarkModeIcon from "@mui/icons-material/DarkMode"
 import dp from "../images/dp.jpg"
 import showcase from "../images/showcase.jpg"
 import "../styles/header.css"
@@ -80,7 +78,7 @@ export const Header = () => {
       </View>
 
       {/* Showcase Section */}
-      {href.indexOf(`notes/editor/`) == -1 && (
+      {href.indexOf(`notes/editor/`) === -1 && (
         <div className="top-header">
           <div className="showcase">
             <img src={showcase} alt="showcase" />

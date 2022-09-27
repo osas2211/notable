@@ -16,13 +16,16 @@ export const Favourites = () => {
           data.notes.map(
             (note) =>
               // render if isFavourite
-              note.favourite && (
+              note.favourite &&
+              !note.archive && (
                 <NoteOverview
                   isFavourite={note.favourite}
                   id={note._id}
                   body={note.textContent}
                   title={note.label}
+                  isArchived={note.archive}
                   refetchNote={refetch}
+                  time={note.last_edited}
                 />
               )
           )}

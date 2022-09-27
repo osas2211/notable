@@ -12,7 +12,7 @@ import "../styles/notes.css"
 import { NoteOverview } from "../ui-components/NoteOverview"
 import { useGetNotesQuery, useAddNoteMutation } from "../redux/services/user"
 import Modal from "@mui/material/Modal"
-import { ToastContainer, toast } from "react-toastify"
+import { toast } from "react-toastify"
 
 export const Notes = () => {
   const style = {
@@ -92,15 +92,20 @@ export const Notes = () => {
       </Heading>
       <Grid templateColumns={{ base: "1fr", large: "1fr 1fr 1fr" }} gap="1rem">
         {isSuccess &&
-          data.notes.map((note) => (
-            <NoteOverview
-              isFavourite={note.favourite}
-              id={note._id}
-              body={note.textContent}
-              title={note.label}
-              refetchNote={refetch}
-            />
-          ))}
+          data.notes.map(
+            (note) =>
+              !note.archive && (
+                <NoteOverview
+                  isFavourite={note.favourite}
+                  id={note._id}
+                  body={note.textContent}
+                  title={note.label}
+                  refetchNote={refetch}
+                  isArchived={note.archive}
+                  time={note.last_edited}
+                />
+              )
+          )}
       </Grid>
     </View>
   )

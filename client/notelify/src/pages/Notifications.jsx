@@ -1,6 +1,5 @@
 import React from "react"
 import { View, Heading, Flex, Button } from "@aws-amplify/ui-react"
-import { Link } from "react-router-dom"
 import avatar from "../images/dp.jpg"
 import "../styles/notification.css"
 
@@ -17,7 +16,7 @@ export const Notifications = () => {
           <View as="div" className="notification">
             <Flex alignItems="center">
               <div className="notification-img">
-                <img src={avatar} alt="Note Owners Image" />
+                <img src={avatar} alt="Note Owner" />
               </div>
               <span>
                 User<span style={{ fontWeight: 500 }}> osas2211 </span> invited
