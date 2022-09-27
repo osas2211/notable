@@ -10,16 +10,14 @@ export const LogIn = () => {
   const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
-  const [login, { data, isLoading }] = useLoginMutation()
+  const [login, { isLoading }] = useLoginMutation()
 
   const onLogin = async (e) => {
     e.preventDefault()
     try {
       await login({ userName, password }).unwrap()
-      console.log(data)
       navigate("/notes")
     } catch (error) {
-      console.log(error)
       toast.error(error.data.message, {
         position: toast.POSITION.TOP_CENTER,
       })

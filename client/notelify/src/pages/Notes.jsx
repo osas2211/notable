@@ -7,7 +7,6 @@ import { useGetNotesQuery } from "../redux/services/user"
 export const Notes = () => {
   const token = localStorage.getItem("token")
   const { data, isSuccess } = useGetNotesQuery(token)
-  console.log(data, token)
   return (
     <View as="div">
       <Heading level={5} margin="2rem 0 1rem 0" fontWeight={"medium"}>

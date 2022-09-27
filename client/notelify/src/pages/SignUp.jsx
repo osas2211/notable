@@ -12,7 +12,7 @@ export const SignUp = () => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const navigate = useNavigate()
-  const [register, { data, isLoading }] = useRegisterMutation()
+  const [register, { isLoading }] = useRegisterMutation()
   const onRegister = async (e) => {
     e.preventDefault()
     try {
@@ -24,7 +24,6 @@ export const SignUp = () => {
       }).unwrap()
       navigate("/notes")
     } catch (error) {
-      console.log(error)
       toast.error("Duplicate User: User already exists", {
         position: toast.POSITION.TOP_CENTER,
       })
