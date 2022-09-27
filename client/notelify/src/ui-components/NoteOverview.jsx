@@ -6,7 +6,12 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import ArchiveIcon from "@mui/icons-material/Archive"
 import DeleteIcon from "@mui/icons-material/Delete"
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt"
-import { useUpdateNoteMutation } from "../redux/services/user"
+import { UnarchiveTwoTone } from "@mui/icons-material"
+import {
+  useUpdateNoteMutation,
+  useDeleteNoteMutation,
+} from "../redux/services/user"
+import { ToastContainer, toast } from "react-toastify"
 
 export const NoteOverview = ({
   title,
@@ -18,6 +23,7 @@ export const NoteOverview = ({
   refetchNote,
 }) => {
   const [updateNote, { data }] = useUpdateNoteMutation()
+  const [deleteNote] = useDeleteNoteMutation()
   const token = localStorage.getItem("token")
   const dateObj = new Date(time)
   const date = dateObj.toLocaleDateString("en-us", {
@@ -34,6 +40,7 @@ export const NoteOverview = ({
 
   return (
     <Card padding={"1rem"} boxShadow="medium">
+      <ToastContainer />
       <Link to={`/notes/editor/${id}`} className="note">
         <Flex justifyContent={"space-between"} alignItems="center">
           <Heading level={6} fontWeight={"medium"}>
@@ -88,7 +95,7 @@ export const NoteOverview = ({
           </div>
           <div>
             <Icon
-              as={ArchiveIcon}
+              as={isArchived === false ? ArchiveIcon : UnarchiveTwoTone}
               fontSize="1.2rem"
               opacity={"0.7"}
               marginLeft="1rem"
@@ -112,6 +119,17 @@ export const NoteOverview = ({
               opacity={"0.7"}
               marginLeft="1rem"
               style={{ cursor: "pointer" }}
+              onClick={async () => {
+                try {
+                  await deleteNote({ token, id }).unwrap()
+                  refetchNote()
+                  toast.warning("Note deleted", {
+                    position: toast.POSITION.TOP_CENTER,
+                  })
+                } catch (error) {
+                  console.log(error)
+                }
+              }}
             />
           </div>
         </Flex>

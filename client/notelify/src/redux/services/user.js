@@ -46,6 +46,17 @@ export const userApi = createApi({
         }
       },
     }),
+    deleteNote: builder.mutation({
+      query(args) {
+        return {
+          url: `notes/${args.id}`,
+          method: "DELETE",
+          headers: {
+            authorization: `Bearer ${args.token}`,
+          },
+        }
+      },
+    }),
 
     // Quicknotes Endpoints
     getQuicknotes: builder.query({
@@ -90,6 +101,7 @@ export const {
   useGetNotesQuery,
   useAddNoteMutation,
   useUpdateNoteMutation,
+  useDeleteNoteMutation,
   useGetQuicknotesQuery,
   useAddQuicknoteMutation,
   useDeleteQuicknoteMutation,
