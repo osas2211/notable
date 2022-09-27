@@ -7,6 +7,7 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000/api/v1/",
   }),
+  tagTypes: ["Note, User, Quicknote"],
   endpoints: (builder) => ({
     getNotes: builder.query({
       query: (token) => {
@@ -19,7 +20,48 @@ export const userApi = createApi({
         }
       },
     }),
+
+    getQuicknotes: builder.query({
+      query: (token) => {
+        return {
+          url: "quicknotes",
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      },
+    }),
+
+    addQuicknote: builder.mutation({
+      query(args) {
+        return {
+          url: "quick-note",
+          method: "POST",
+          headers: {
+            authorization: `Bearer ${args.token}`,
+          },
+          body: args.text,
+        }
+      },
+    }),
+    deleteQuicknote: builder.mutation({
+      query(args) {
+        return {
+          url: `quick-note/${args.id}`,
+          method: "DELETE",
+          headers: {
+            authorization: `Bearer ${args.token}`,
+          },
+        }
+      },
+    }),
   }),
 })
 
-export const { useGetNotesQuery } = userApi
+export const {
+  useGetNotesQuery,
+  useGetQuicknotesQuery,
+  useAddQuicknoteMutation,
+  useDeleteQuicknoteMutation,
+} = userApi
