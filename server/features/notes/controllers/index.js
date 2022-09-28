@@ -7,18 +7,24 @@ const moment = require("moment")
 
 const updateFunc = async (id, field, content, request, response) => {
   const note = await noteModel.findById(id)
-  if (String(note.owner) === request.user.id) {
-    await note.updateOne(
-      { $set: { [field]: content, last_edited: new Date().toISOString() } },
-      { new: true }
-    )
-    note[field] = content
-    return response.status(200).json({ updated: true, note: note })
-  } else {
-    return response
-      .status(401)
-      .json({ updated: false, message: "Unauthorized Request" })
-  }
+  // if (String(note.owner) === request.user.id) {
+  //   await note.updateOne(
+  //     { $set: { [field]: content, last_edited: new Date().toISOString() } },
+  //     { new: true }
+  //   )
+  //   note[field] = content
+  //   return response.status(200).json({ updated: true, note: note })
+  // } else {
+  //   return response
+  //     .status(401)
+  //     .json({ updated: false, message: "Unauthorized Request" })
+  // }
+  await note.updateOne(
+    { $set: { [field]: content, last_edited: new Date().toISOString() } },
+    { new: true }
+  )
+  note[field] = content
+  return response.status(200).json({ updated: true, note: note })
 }
 
 // ****************************** CRUD CONTROLS ******************************

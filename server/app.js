@@ -9,6 +9,7 @@ const quickNoteRoutes = require("./features/notes/quicknotes")
 const auth = require("./middlewares/auth")
 const app = express()
 const redisClient = require("./redis/client")
+const noteControls = require("./features/notes/controllers")
 
 // redisClient
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1", auth, noteRoutes)
 app.use("/api/v1", auth, quickNoteRoutes)
+app.put("/api/v1/notes/:noteID", noteControls.updateNote)
 
 const PORT = process.env.PORT || 4000
 
