@@ -6,6 +6,7 @@ import StickyNote2Icon from "@mui/icons-material/StickyNote2"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
 import ArchiveIcon from "@mui/icons-material/Archive"
+import GroupsIcon from "@mui/icons-material/Groups"
 import dp from "../images/dp.jpg"
 import showcase from "../images/showcase.jpg"
 import "../styles/header.css"
@@ -57,6 +58,11 @@ export const Header = () => {
                 <Icon as={FavoriteBorderIcon} color="#EF2D56" /> Favourites
               </Link>
             </li>
+            <li className={href === "/collab-notes" && "active-nav"}>
+              <Link to="/collab-notes">
+                <Icon as={GroupsIcon} color="#258EA6" /> Collab Notes
+              </Link>
+            </li>
             <li className={href === "/notifications" && "active-nav"}>
               <Link to="/notifications">
                 <Icon as={NotificationsNoneIcon} color="#2FBF71" /> Notifcations
@@ -87,7 +93,15 @@ export const Header = () => {
             marginTop={"2rem"}
           >
             <Text color={"#fff"}>
-              <h2>Good Morning, {isSuccess && data.user.name}</h2>
+              <h2>
+                Good{" "}
+                {dateObj.getHours() < 12
+                  ? "Morning"
+                  : dateObj.getHours() < 18
+                  ? "Afternoon"
+                  : "Evening"}
+                , {isSuccess && data.user.name}
+              </h2>
               <p>
                 <small>{date}</small>
               </p>

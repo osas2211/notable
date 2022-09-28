@@ -11,6 +11,7 @@ import { Favourites } from "./pages/Favourites"
 import { Notifications } from "./pages/Notifications"
 import { Archive } from "./pages/Archive"
 import { Editor } from "./pages/Editor"
+import { CollabNotes } from "./pages/CollabNotes"
 import { store } from "./redux/store"
 import { Provider } from "react-redux"
 
@@ -25,7 +26,9 @@ function App() {
           <Route path="/" element={<PrivateRoutes />}>
             <Route path="/notes" element={<Notes />} />
             <Route path="/notes/editor/:id" element={<Editor />} />
+            <Route path="/collab-notes/editor/:id" element={<Editor />} />
             <Route path="/favourites" element={<Favourites />} />
+            <Route path="/collab-notes" element={<CollabNotes />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/archive" element={<Archive />} />
           </Route>

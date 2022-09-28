@@ -35,10 +35,34 @@ export const userApi = createApi({
       },
     }),
     // Notes Endpoints
+    getNote: builder.query({
+      query: (args) => {
+        return {
+          url: `notes/${args.id}`,
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${args.token}`,
+          },
+        }
+      },
+    }),
+
     getNotes: builder.query({
       query: (token) => {
         return {
           url: "notes",
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      },
+    }),
+
+    getCollabNotes: builder.query({
+      query: (token) => {
+        return {
+          url: "collab-notes",
           method: "GET",
           headers: {
             authorization: `Bearer ${token}`,
@@ -169,7 +193,9 @@ export const {
   useGetUsersMutation,
 
   //Notes
+  useGetNoteQuery,
   useGetNotesQuery,
+  useGetCollabNotesQuery,
   useAddNoteMutation,
   useUpdateNoteMutation,
   useDeleteNoteMutation,

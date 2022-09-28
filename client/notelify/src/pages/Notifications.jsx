@@ -4,6 +4,7 @@ import avatar from "../images/dp.jpg"
 import "../styles/notification.css"
 import {
   useAcceptInviteMutation,
+  useGetCollabNotesQuery,
   useGetUserQuery,
   useRejectInviteMutation,
 } from "../redux/services/user"
@@ -14,6 +15,7 @@ export const Notifications = () => {
   const { data, isSuccess, refetch } = useGetUserQuery(token)
   const [accept] = useAcceptInviteMutation()
   const [reject] = useRejectInviteMutation()
+  const parameters = useGetCollabNotesQuery(token)
   return (
     <View as="div">
       <ToastContainer />
@@ -55,6 +57,7 @@ export const Notifications = () => {
                         position: toast.POSITION.TOP_CENTER,
                       })
                       refetch()
+                      parameters.refetch()
                     } catch (error) {
                       console.log(error)
                       toast.error(error.data.message, {
