@@ -1,8 +1,8 @@
-import React, { useState } from "react"
+import React from "react"
 import { RichTextEditor } from "../ui-components/RichTextEditor"
 import { Heading, View, Icon, Flex } from "@aws-amplify/ui-react"
 import { Download, Save, Edit } from "@mui/icons-material"
-import { useHref, useLocation, useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import { InviteCollaborator } from "../ui-components/InviteCollaborator"
 import { useGetNoteQuery } from "../redux/services/user"
 
@@ -11,13 +11,7 @@ export const Editor = () => {
   const location = useLocation()
   const token = localStorage.getItem("token")
   const { data, isSuccess } = useGetNoteQuery({ id: param.id, token })
-  const initialValue = [
-    {
-      type: "paragraph",
-      children: [{ text: "" }],
-    },
-  ]
-  const [text, setText] = useState(initialValue)
+  const textContent = isSuccess && JSON.parse(data.note.textContent)
   return (
     <>
       <Flex
@@ -46,7 +40,11 @@ export const Editor = () => {
           />
         </View>
       </Flex>
-      <RichTextEditor initialValue={text} setText={setText} />
+      {isSuccess !== false ? (
+        <RichTextEditor initialValue={textContent} />
+      ) : (
+        <Heading>Fetching Note....</Heading>
+      )}
     </>
   )
 }

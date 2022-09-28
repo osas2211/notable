@@ -1,11 +1,10 @@
-import React, { useCallback, useMemo, Ref, PropsWithChildren } from "react"
+import React, { useCallback, useMemo } from "react"
 import isHotkey from "is-hotkey"
 import { Editable, withReact, useSlate, Slate } from "slate-react"
 import {
   Editor,
   Transforms,
   createEditor,
-  Descendant,
   Element as SlateElement,
 } from "slate"
 import { withHistory } from "slate-history"
@@ -107,13 +106,26 @@ const HOTKEYS = {
 const LIST_TYPES = ["numbered-list", "bulleted-list"]
 const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"]
 
-export const RichTextEditor = ({ initialValue, setText }) => {
+export const RichTextEditor = ({ initialValue }) => {
   const renderElement = useCallback((props) => <Element {...props} />, [])
   const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
   const editor = useMemo(() => withHistory(withReact(createEditor())), [])
 
   return (
-    <Slate editor={editor} value={initialValue}>
+    <Slate
+      editor={editor}
+      value={initialValue}
+      onChange={(value) => {
+        const isAstChange = editor.operations.some(
+          (op) => "set_selection" !== op.type
+        )
+        if (isAstChange) {
+          // Save the value to Local Storage.
+          const content = JSON.stringify(value)
+          localStorage.setItem("content", content)
+        }
+      }}
+    >
       <Toolbar>
         <MarkButton format="bold" icon={<FormatBold />} />
         <MarkButton format="italic" icon={<FormatItalic />} />

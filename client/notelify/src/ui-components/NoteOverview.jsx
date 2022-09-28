@@ -12,6 +12,7 @@ import {
 } from "../redux/services/user"
 import { ToastContainer, toast } from "react-toastify"
 import { InviteCollaborator } from "./InviteCollaborator"
+import { Node } from "slate"
 
 export const NoteOverview = ({
   title,
@@ -41,6 +42,15 @@ export const NoteOverview = ({
   })
 
   const href = useHref()
+  const serialize = (value) => {
+    return (
+      value
+        // Return the string content of each paragraph in the value's children.
+        .map((n) => Node.string(n))
+        // Join them all with line breaks denoting paragraphs.
+        .join("\n")
+    )
+  }
 
   return (
     <Card padding={"1rem"} boxShadow="medium">
@@ -66,7 +76,8 @@ export const NoteOverview = ({
           </Text>
         </View>
         <Text as="p" fontSize={"0.85rem"}>
-          {body?.slice(0, 120)}....
+          {body !== undefined && serialize(JSON.parse(body)).slice(0, 120)}
+          ....
         </Text>
       </Link>
 
