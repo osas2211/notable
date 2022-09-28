@@ -64,6 +64,17 @@ const getNotes = async (req, res) => {
   }
 }
 
+//GET Get Notes
+const getCollabNotes = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.user.id).populate("collab_notes")
+    //.populate("owner")
+    return res.status(200).json({ success: true, notes: user.collab_notes })
+  } catch (error) {
+    res.status(404).json({ success: false, message: error.message })
+  }
+}
+
 // PUT Update Note
 const updateNote = async (req, res) => {
   const { label, textContent, imgUrl, favourite, archive } = req.body
@@ -270,6 +281,7 @@ const noteControls = {
   createNote,
   getNote,
   getNotes,
+  getCollabNotes,
   updateNote,
   deleteNote,
   inviteCollaborator,
