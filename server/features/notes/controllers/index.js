@@ -66,7 +66,7 @@ const getNotes = async (req, res) => {
 
 // PUT Update Note
 const updateNote = async (req, res) => {
-  const { label, textContent, imgUrl } = req.body
+  const { label, textContent, imgUrl, favourite, archive } = req.body
   const noteID = req.params.noteID
   try {
     if (label) {
@@ -74,6 +74,12 @@ const updateNote = async (req, res) => {
     }
     if (textContent) {
       return await updateFunc(noteID, "textContent", textContent, req, res)
+    }
+    if (favourite !== undefined) {
+      return await updateFunc(noteID, "favourite", favourite, req, res)
+    }
+    if (archive !== undefined) {
+      return await updateFunc(noteID, "archive", archive, req, res)
     }
   } catch (error) {
     res.status(400).json({ updated: false, message: error.message })
@@ -147,7 +153,13 @@ const inviteCollaborator = async (req, res) => {
       await user.updateOne(
         {
           $push: {
-            invitations: { ownerID: ownerID, noteID: noteID },
+            invitations: {
+              ownerID: ownerID,
+              noteID: noteID,
+              ownerUserName: owner.userName,
+              label: note.label,
+              ownerImg: owner.avatarURL,
+            },
           },
         },
         { new: true }

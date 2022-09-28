@@ -56,7 +56,13 @@ const userSchema = new Schema({
       ownerID: {
         type: String,
       },
+      ownerUserName: {
+        type: String,
+      },
       label: {
+        type: String,
+      },
+      ownerImg: {
         type: String,
       },
     }),

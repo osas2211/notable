@@ -10,6 +10,8 @@ const {
   EmailVerificationTemplate,
 } = require("../../../utils/verifyemail_template")
 const { config } = require("dotenv")
+const { createAvatar } = require("@dicebear/avatars")
+const style = require("@dicebear/adventurer-neutral")
 
 /********************************* AUTHENTICATION CONTROLS *********************************/
 
@@ -25,6 +27,7 @@ const signUp = async (req, res) => {
       password: encryptedPassword,
       email,
       otp: otp,
+      avatarURL: createAvatar(style, { dataUri: true }),
     })
     const token = await generateToken({ userName, id: String(user._id) })
     user.token = token
@@ -79,6 +82,7 @@ const signIn = async (req, res) => {
     if (!result) return authenticationFailed(res, "Password is incorrect")
     const token = await generateToken({ userName, id: String(user._id) })
     user.token = token
+    await user.save()
     return res.status(200).json({ authenticated: true, user })
   } catch (error) {
     return res
@@ -90,9 +94,21 @@ const signIn = async (req, res) => {
 /********************************* IN-APP CONTROLS *********************************/
 
 const getUser = async (req, res) => {
+  const userID = req.user.id
   try {
-    const user = await userModel.findById(req.params.userID).populate("notes")
+    const user = await userModel.findById(userID).populate("notes")
     return res.status(200).json({ user })
+  } catch (error) {
+    return res.status(400).json({ message: error.message })
+  }
+}
+
+const getUsers = async (req, res) => {
+  const body = req.body
+  try {
+    const users = await userModel.find({ _id: body.users })
+    if (users?.length !== undefined) return res.status(200).json({ users })
+    return res.status(200).json({ users: [users] })
   } catch (error) {
     return res.status(400).json({ message: error.message })
   }
@@ -209,6 +225,7 @@ const userControls = {
   verifyEmail,
   signIn,
   getUser,
+  getUsers,
   updateProfile,
   resetPassword,
   verifyPasswordResetPin,

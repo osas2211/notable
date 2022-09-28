@@ -10,19 +10,34 @@ router.post("/quick-note", async (req, res) => {
   const userID = req.user.id
   const text = req.body.text
   try {
-    const user = await userModel.findByIdAndUpdate(
-      userID,
-      {
-        $push: { quicknotes: { body: text } },
-      },
-      { new: true }
-    )
-    res.status(200).json({
-      created: true,
-      user: user.quicknotes,
-    })
+    if (text !== "") {
+      const user = await userModel.findByIdAndUpdate(
+        userID,
+        {
+          $push: { quicknotes: { body: text } },
+        },
+        { new: true }
+      )
+      res.status(200).json({
+        created: true,
+        user: user.quicknotes,
+      })
+    }
   } catch (error) {
     res.status(400).json({ created: false, message: error.message })
+  }
+})
+
+// POST create quickNote
+router.get("/quicknotes", async (req, res) => {
+  const userID = req.user.id
+  try {
+    const user = await userModel.findById(userID)
+    res.status(200).json({
+      quicknotes: user.quicknotes,
+    })
+  } catch (error) {
+    res.status(400).json({ message: error.message })
   }
 })
 

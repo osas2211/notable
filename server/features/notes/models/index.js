@@ -32,6 +32,10 @@ const noteSchema = new Schema({
       ref: "User",
     },
   ],
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 })
 
 module.exports = model("Note", noteSchema)
