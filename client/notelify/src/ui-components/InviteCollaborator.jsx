@@ -1,12 +1,20 @@
 import React, { useState } from "react"
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt"
-import { Button, Icon, TextField, View } from "@aws-amplify/ui-react"
+import {
+  Button,
+  Flex,
+  Icon,
+  Text,
+  TextField,
+  View,
+} from "@aws-amplify/ui-react"
 import { Modal } from "@mui/material"
 import {
   useGetUsersMutation,
   useInviteCollaboratorMutation,
 } from "../redux/services/user"
 import { ToastContainer, toast } from "react-toastify"
+import avatar from "../images/dp.jpg"
 
 export const InviteCollaborator = ({ noteID, collaborators, fontSize }) => {
   const style = {
@@ -23,7 +31,7 @@ export const InviteCollaborator = ({ noteID, collaborators, fontSize }) => {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const [invite, feedback] = useInviteCollaboratorMutation()
-  const [getUsers, { data, isLoading }] = useGetUsersMutation()
+  const [getUsers, { data, isLoading, isSuccess }] = useGetUsersMutation()
   const [userName, setUserName] = useState("")
   return (
     <>
@@ -37,7 +45,6 @@ export const InviteCollaborator = ({ noteID, collaborators, fontSize }) => {
           try {
             handleOpen()
             await getUsers({ token, users: collaborators }).unwrap()
-            console.log(data)
           } catch (error) {
             console.log(error.message)
           }
@@ -56,15 +63,20 @@ export const InviteCollaborator = ({ noteID, collaborators, fontSize }) => {
           <View as="div" marginTop="1rem">
             {isLoading ? (
               <p style={{ fontStyle: "italic" }}>fetching collaborators...</p>
-            ) : data?.users === null ? (
+            ) : data?.users[0] === null ? (
               <p>No collaborator</p>
             ) : (
-              data?.users.map((user) => (
-                <div>
-                  <p>
-                    - {user.name} ({user.userName})
-                  </p>
-                </div>
+              isSuccess &&
+              data.users[0] !== null &&
+              data.users.map((user) => (
+                <Flex alignItems={"center"} marginBottom="0.5rem">
+                  <div className="notification-img">
+                    <img src={user.avatarURL || avatar} alt="Collaborator" />
+                  </div>
+                  <Text>
+                    {user.name} ({user.userName})
+                  </Text>
+                </Flex>
               ))
             )}
           </View>
@@ -85,6 +97,8 @@ export const InviteCollaborator = ({ noteID, collaborators, fontSize }) => {
                 toast.success("Invitation Sent!.", {
                   position: toast.POSITION.TOP_CENTER,
                 })
+                setUserName("")
+                handleClose()
               } catch (error) {
                 console.log(error.data.message)
                 toast.error(error.data.message, {

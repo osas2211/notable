@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import { RichTextEditor } from "../ui-components/RichTextEditor"
-import { Heading, View, Text, Icon, Flex } from "@aws-amplify/ui-react"
+import { Heading, View, Icon, Flex } from "@aws-amplify/ui-react"
 import { Download, Save, Edit } from "@mui/icons-material"
-import PersonAddAlt from "@mui/icons-material/PersonAddAlt"
 import { useParams } from "react-router-dom"
 import { InviteCollaborator } from "../ui-components/InviteCollaborator"
 

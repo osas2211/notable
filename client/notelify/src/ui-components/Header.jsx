@@ -10,24 +10,22 @@ import dp from "../images/dp.jpg"
 import showcase from "../images/showcase.jpg"
 import "../styles/header.css"
 import { Logout } from "./Logout"
+import { useGetUserQuery } from "../redux/services/user"
 
 export const Header = () => {
+  const token = localStorage.getItem("token")
+  const { data, isSuccess } = useGetUserQuery(token)
   const [mobileNav, setMobileNav] = useState(false)
   const href = useHref()
+  const dateObj = new Date()
+  const date = dateObj.toLocaleDateString("en-us", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })
   return (
     <div>
-      {/* {href.indexOf(`notes/editor/`) == -1 && (
-        <Button
-          variation="primary"
-          size="small"
-          className="add-btn"
-          boxShadow={"large"}
-        >
-          {" "}
-          + Add New Note
-        </Button>
-      )} */}
-
       {/* Nav Section */}
       <View
         as="div"
@@ -89,20 +87,12 @@ export const Header = () => {
             marginTop={"2rem"}
           >
             <Text color={"#fff"}>
-              <h2>Good Morning, John.</h2>
+              <h2>Good Morning, {isSuccess && data.user.name}</h2>
               <p>
-                <small>Friday, September 23, 2022</small>
+                <small>{date}</small>
               </p>
             </Text>
-            {/* <Link
-              to={"/profile"}
-              style={{
-                marginRight: "1rem",
-                display: "inline-block",
-                color: "#fff",
-              }}
-              className="user-icon"
-            ></Link> */}
+
             <View
               className="user-icon"
               style={{
@@ -122,7 +112,7 @@ export const Header = () => {
                 boxShadow={"large"}
               >
                 <img
-                  src={dp}
+                  src={isSuccess && (data.user.avatarURL || dp)}
                   alt="User Avatar"
                   style={{
                     height: "2rem",
@@ -132,7 +122,7 @@ export const Header = () => {
                     margin: "0",
                   }}
                 />
-                <span>John Doe</span>
+                <span>{isSuccess && data.user.name}</span>
               </Flex>
             </View>
           </Flex>
