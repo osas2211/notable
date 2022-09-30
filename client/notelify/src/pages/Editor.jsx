@@ -85,7 +85,7 @@ export const Editor = () => {
         </View>
       </Flex>
       {isSuccess !== false ? (
-        <RichTextEditor initialValue={textContent} />
+        <RichTextEditor initialValue={textContent} id={param.id} />
       ) : (
         <Heading>Fetching Note....</Heading>
       )}

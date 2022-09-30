@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import isHotkey from "is-hotkey"
 import { Editable, withReact, useSlate, Slate } from "slate-react"
 import {
@@ -24,6 +24,7 @@ import {
   LooksOne,
   LooksTwo,
 } from "@mui/icons-material"
+import { connect } from "socket.io-client"
 
 export const Button = React.forwardRef(
   ({ className, active, reversed, ...props }, ref) => (
@@ -106,58 +107,92 @@ const HOTKEYS = {
 const LIST_TYPES = ["numbered-list", "bulleted-list"]
 const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"]
 
-export const RichTextEditor = ({ initialValue }) => {
+export const RichTextEditor = ({ initialValue, id }) => {
+  const [value, setValue] = useState(initialValue)
   const renderElement = useCallback((props) => <Element {...props} />, [])
   const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
-  const editor = useMemo(() => withHistory(withReact(createEditor())), [])
+  // const editor = useMemo(() => withHistory(withReact(createEditor() as any)), [])
+  const editor = useMemo(() => withReact(createEditor()), [])
 
+  const [saved, setSaved] = useState(true)
+
+  const remote = useRef(false)
+  const socketchange = useRef(false)
+  const socket = connect("http://localhost:8000")
+  useEffect(() => {
+    socket.emit("CONNECTED_TO_ROOM", id)
+    socket.on("ROOM_CONNECTION", (data) => setValue(data))
+    socket.on(`text-changed`, ({ ops, newText }) => {
+      remote.current = true
+      Editor.withoutNormalizing(editor, () => {
+        JSON.parse(ops).forEach((op) => editor.apply(op))
+      })
+      remote.current = false
+      socketchange.current = true
+    })
+
+    return () => {
+      socket.off(`text-changed`)
+    }
+  })
   return (
-    <Slate
-      editor={editor}
-      value={initialValue}
-      onChange={(value) => {
-        const isAstChange = editor.operations.some(
-          (op) => "set_selection" !== op.type
-        )
-        if (isAstChange) {
-          // Save the value to Local Storage.
-          const content = JSON.stringify(value)
-          localStorage.setItem("content", content)
-        }
-      }}
-    >
-      <Toolbar>
-        <MarkButton format="bold" icon={<FormatBold />} />
-        <MarkButton format="italic" icon={<FormatItalic />} />
-        <MarkButton format="underline" icon={<FormatUnderlined />} />
-        <MarkButton format="code" icon={<Code />} />
-        <BlockButton format="heading-one" icon={<LooksOne />} />
-        <BlockButton format="heading-two" icon={<LooksTwo />} />
-        <BlockButton format="block-quote" icon={<FormatQuote />} />
-        <BlockButton format="numbered-list" icon={<FormatListNumbered />} />
-        <BlockButton format="bulleted-list" icon={<FormatListBulleted />} />
-        <BlockButton format="left" icon={<FormatAlignLeft />} />
-        <BlockButton format="center" icon={<FormatAlignCenter />} />
-        <BlockButton format="right" icon={<FormatAlignRight />} />
-        <BlockButton format="justify" icon={<FormatAlignJustify />} />
-      </Toolbar>
-      <Editable
-        renderElement={renderElement}
-        renderLeaf={renderLeaf}
-        placeholder="Enter your note here…"
-        spellCheck
-        autoFocus
-        onKeyDown={(event) => {
-          for (const hotkey in HOTKEYS) {
-            if (isHotkey(hotkey, event)) {
-              event.preventDefault()
-              const mark = HOTKEYS[hotkey]
-              toggleMark(editor, mark)
+    <>
+      <Slate
+        editor={editor}
+        value={value}
+        onChange={(value) => {
+          setValue(value)
+          const ops = editor.operations.filter((o) => {
+            if (o) {
+              return o.type !== "set_selection" && o.type !== "set_value"
             }
+            return false
+          })
+          if (ops.length && !remote.current && !socketchange.current) {
+            setSaved(false)
+            socket.emit("text-changed", {
+              newText: value,
+              id,
+              ops: JSON.stringify(ops),
+            })
+            localStorage.setItem("content", JSON.stringify(value))
           }
+          socketchange.current = false
         }}
-      />
-    </Slate>
+      >
+        <Toolbar>
+          <MarkButton format="bold" icon={<FormatBold />} />
+          <MarkButton format="italic" icon={<FormatItalic />} />
+          <MarkButton format="underline" icon={<FormatUnderlined />} />
+          <MarkButton format="code" icon={<Code />} />
+          <BlockButton format="heading-one" icon={<LooksOne />} />
+          <BlockButton format="heading-two" icon={<LooksTwo />} />
+          <BlockButton format="block-quote" icon={<FormatQuote />} />
+          <BlockButton format="numbered-list" icon={<FormatListNumbered />} />
+          <BlockButton format="bulleted-list" icon={<FormatListBulleted />} />
+          <BlockButton format="left" icon={<FormatAlignLeft />} />
+          <BlockButton format="center" icon={<FormatAlignCenter />} />
+          <BlockButton format="right" icon={<FormatAlignRight />} />
+          <BlockButton format="justify" icon={<FormatAlignJustify />} />
+        </Toolbar>
+        <Editable
+          renderElement={renderElement}
+          renderLeaf={renderLeaf}
+          placeholder="Enter your note here…"
+          spellCheck
+          autoFocus
+          onKeyDown={(event) => {
+            for (const hotkey in HOTKEYS) {
+              if (isHotkey(hotkey, event)) {
+                event.preventDefault()
+                const mark = HOTKEYS[hotkey]
+                toggleMark(editor, mark)
+              }
+            }
+          }}
+        />
+      </Slate>
+    </>
   )
 }
 
