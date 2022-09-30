@@ -118,7 +118,7 @@ export const RichTextEditor = ({ initialValue, id }) => {
 
   const remote = useRef(false)
   const socketchange = useRef(false)
-  const socket = connect("http://localhost:8000")
+  const socket = connect("https://notelify-backend.up.railway.app/")
   useEffect(() => {
     socket.emit("CONNECTED_TO_ROOM", id)
     socket.on("ROOM_CONNECTION", (data) => setValue(data))

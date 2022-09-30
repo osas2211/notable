@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import Notelifylogo3 from "./Notelifylogo3"
 import { Link, useHref } from "react-router-dom"
-import { View, Icon, Flex, SearchField, Text } from "@aws-amplify/ui-react"
+import { View, Icon, Flex, Text } from "@aws-amplify/ui-react"
 import StickyNote2Icon from "@mui/icons-material/StickyNote2"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone"
@@ -35,14 +35,18 @@ export const Header = () => {
       >
         <View as="div" marginLeft={"1.5rem"}>
           <Link to={"/"}>
-            <Notelifylogo3 marginBottom={"2.5rem"} />
+            <Notelifylogo3 marginBottom={"2rem"} />
           </Link>
-          <View as="div" margin="1rem 0 1rem -1rem" width="100%">
-            <SearchField
-              placeholder="Search notes"
-              boxShadow={"medium"}
-              size="small"
-            />
+          <View
+            as="div"
+            margin="0.5rem 0 0.5rem -1rem"
+            textAlign={"center"}
+            fontFamily="monospace"
+            fontSize="0.9rem"
+            className="light-up"
+          >
+            <Text color="#1C1D21">Take Notes,</Text>
+            <Text color="#1C1D21">Unleash your Ideas.</Text>
           </View>
         </View>
 

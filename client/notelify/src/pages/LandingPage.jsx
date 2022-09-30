@@ -100,6 +100,7 @@ export const LandingPage = () => {
           <a
             href="https://osaretinfrank.me"
             target={"_blank"}
+            rel="noreferrer"
             style={{ textDecoration: "underline", color: "#0DA2E7" }}
           >
             Osariemen Osaretin Frank

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap");
 
 * {
   padding: 0;
@@ -8,6 +9,7 @@
 body {
   font-family: "Quicksand", Arial, Helvetica, sans-serif;
   position: relative;
+  color: #1c1c1c;
 }
 /* Override only primary variation styles */
 .amplify-button[data-variation="primary"] {
@@ -87,6 +89,12 @@ main {
   bottom: 3rem;
   right: 3rem;
   z-index: 10;
+}
+
+.light-up {
+  font-family: "Shadows Into Light", cursive;
+  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 52px #ff331f,
+    0 0 92px #ff331f, 0 0 102px #ff331f, 0 0 112px #ff331f, 0 0 161px #ff331f;
 }
 
 @media (max-width: 700px) {

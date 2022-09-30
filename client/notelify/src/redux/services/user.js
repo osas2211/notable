@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react"
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/api/v1/",
+    baseUrl: "https://notelify-backend.up.railway.app/api/v1/",
   }),
   tagTypes: ["Note, User, Quicknote"],
   endpoints: (builder) => ({
