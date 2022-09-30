@@ -13,6 +13,7 @@ import {
 import { ToastContainer, toast } from "react-toastify"
 import { InviteCollaborator } from "./InviteCollaborator"
 import { useSerialize } from "../hooks/useSerialize"
+import { useDateFormater } from "../hooks/useDateFormater"
 
 export const NoteOverview = ({
   title,
@@ -29,17 +30,7 @@ export const NoteOverview = ({
   const [deleteNote] = useDeleteNoteMutation()
   const token = localStorage.getItem("token")
   const dateObj = new Date(time)
-  const date = dateObj.toLocaleDateString("en-us", {
-    weekday: "short",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  })
-  const time_ = dateObj.toLocaleTimeString("en-us", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  })
+  const { date, time_ } = useDateFormater(dateObj)
 
   const href = useHref()
   const serialize = useSerialize
