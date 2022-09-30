@@ -33,18 +33,7 @@ module.exports.invitationEmail = (link, name, owner_userName, label) => {
               padding: 1rem;
             "
           >
-            <a
-              href="${link}"
-              class=""
-              style="
-                background-color: rgba(26, 24, 24, 0.877);
-                display: inline-block;
-                padding: 0.5rem 1rem;
-                text-decoration: none;
-                color: white;
-              "
-              >Accept Invitation</a
-            >
+            
           </div>
           <div>
             <p class="mb-0">Regards,</p>
