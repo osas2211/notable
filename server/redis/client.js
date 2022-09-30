@@ -1,7 +1,11 @@
 const { createClient } = require("redis")
 const moment = require("moment")
 
-const client = createClient()
+const client = createClient({
+  socket: {
+    port: 8000,
+  },
+})
 
 client
   .connect()

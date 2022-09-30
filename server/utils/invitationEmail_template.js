@@ -53,9 +53,7 @@ module.exports.invitationEmail = (link, name, owner_userName, label) => {
           <hr class="my-4" />
           <div>
             <p class="small">
-              If you're having trouble clicking the "Accept Invitation" button,
-              copy and paste the URL below into your web browser:
-              <a href="${link}">${link}</a>
+              Please log in to your Notelify account, go to notifications and make an action concerning this invite.
             </p>
           </div>
         </div>
